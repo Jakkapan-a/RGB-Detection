@@ -78,18 +78,23 @@ namespace RGB_Detection
         }
         private void Capture_OnVideoStop()
         {
-            timer_get.Stop();
+           
             if (scrollPictureBox.InvokeRequired)
             {
-                scrollPictureBox.Invoke(new Action(()=>scrollPictureBox.Image = null));
+                scrollPictureBox.Invoke(new Action(()=>{scrollPictureBox.Image = null;
+                          timer_get.Stop();
+                }));
                 return;
             }
             scrollPictureBox.Image = null;
+  
         }
             
         private void Capture_OnVideoStarted()
         {
-            timer_get.Start();
+            Invoke(new Action(() => {
+                timer_get.Start();
+            }));
         }
 
         private delegate void FrameVideo(Bitmap bitmap);
@@ -119,7 +124,7 @@ namespace RGB_Detection
             }
             scrollPictureBox.ResumeLayout();
         }
-
+        private int isColorChange = 0;
         private void timer_get_Tick(object sender, EventArgs e)
         {
             if (bmp != null && scrollPictureBox._Rectangle != Rectangle.Empty && rect != Rectangle.Empty)
@@ -139,6 +144,11 @@ namespace RGB_Detection
                     // Send data to Arduino
                     // ...
                     lbColor.Text = "Green";
+                    // if(isColorChange != 1)
+                    // {
+                    //     serialCommand("1");
+                    //     isColorChange = 1;
+                    // }
                     serialCommand("1");
                 }
 
@@ -149,6 +159,7 @@ namespace RGB_Detection
                     // ...
                     lbColor.Text = "Red";
                     serialCommand("2");
+                    isColorChange = 2;
                 }
                 // Blue color
                 if (pixelColor.R < 100 && pixelColor.G < 100 && pixelColor.B > 100)
@@ -157,6 +168,7 @@ namespace RGB_Detection
                     // ...
                     lbColor.Text = "Blue";
                     serialCommand("3");
+                    isColorChange = 3;
                 }
 
                 // Black color
@@ -166,6 +178,7 @@ namespace RGB_Detection
                     // ...
                     lbColor.Text = "Black";
                     serialCommand("4");
+                    isColorChange = 4;
                 }
 
                 // White color'
@@ -175,6 +188,7 @@ namespace RGB_Detection
                     // ...
                     lbColor.Text = "White";
                     serialCommand("5");
+                    isColorChange = 5;
                 }
                 // Yellow color
                 if (pixelColor.R > 100 && pixelColor.G > 100 && pixelColor.B < 100)
@@ -183,6 +197,7 @@ namespace RGB_Detection
                     // ...
                     lbColor.Text = "Yellow";
                     serialCommand("6");
+                    isColorChange = 6;
                 }
 
                 // Pink color
@@ -192,6 +207,7 @@ namespace RGB_Detection
                     // ...
                     lbColor.Text = "Pink";
                     serialCommand("7");
+                    isColorChange = 7;
                 }
                 //
             }        
