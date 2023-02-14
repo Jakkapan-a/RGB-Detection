@@ -139,7 +139,7 @@ namespace RGB_Detection
                 txtBlue.Text = pixelColor.B.ToString();
                 // Test Process
                 // Green color
-                if (pixelColor.R < 100 && pixelColor.G > 100 && pixelColor.B < 100)
+                if (pixelColor.R < 180 && pixelColor.G > 130 && pixelColor.B < 130)
                 {
                     // Send data to Arduino
                     // ...
@@ -150,10 +150,18 @@ namespace RGB_Detection
                     //     isColorChange = 1;
                     // }
                     serialCommand("1");
-                }
-
+                }else
                 // Red color
-                if (pixelColor.R > 100 && pixelColor.G < 100 && pixelColor.B < 100)
+                if (pixelColor.R > 160 && pixelColor.G < 120 && pixelColor.B < 140)
+                {
+                    // Send data to Arduino
+                    // ...
+                    lbColor.Text = "Red";
+                    serialCommand("2");
+                    isColorChange = 2;
+                }else
+                // Red color
+                if (pixelColor.R > 80 && pixelColor.R > 140 && pixelColor.G < 90 && pixelColor.B < 90)
                 {
                     // Send data to Arduino
                     // ...
@@ -172,7 +180,7 @@ namespace RGB_Detection
                 }
 
                 // Black color
-                if (pixelColor.R < 100 && pixelColor.G < 100 && pixelColor.B < 100)
+                if (pixelColor.R < 50 && pixelColor.G < 50 && pixelColor.B < 50)
                 {
                     // Send data to Arduino
                     // ...
@@ -182,33 +190,33 @@ namespace RGB_Detection
                 }
 
                 // White color'
-                if (pixelColor.R > 100 && pixelColor.G > 100 && pixelColor.B > 100)
-                {
-                    // Send data to Arduino
-                    // ...
-                    lbColor.Text = "White";
-                    serialCommand("5");
-                    isColorChange = 5;
-                }
-                // Yellow color
-                if (pixelColor.R > 100 && pixelColor.G > 100 && pixelColor.B < 100)
-                {
-                    // Send data to Arduino
-                    // ...
-                    lbColor.Text = "Yellow";
-                    serialCommand("6");
-                    isColorChange = 6;
-                }
+                //if (pixelColor.R > 100 && pixelColor.G > 100 && pixelColor.B > 100)
+                //{
+                //    // Send data to Arduino
+                //    // ...
+                //    lbColor.Text = "White";
+                //    serialCommand("5");
+                //    isColorChange = 5;
+                //}
+                //// Yellow color
+                //if (pixelColor.R > 100 && pixelColor.G > 100 && pixelColor.B < 100)
+                //{
+                //    // Send data to Arduino
+                //    // ...
+                //    lbColor.Text = "Yellow";
+                //    serialCommand("6");
+                //    isColorChange = 6;
+                //}
 
-                // Pink color
-                if (pixelColor.R > 100 && pixelColor.G < 100 && pixelColor.B > 100)
-                {
-                    // Send data to Arduino
-                    // ...
-                    lbColor.Text = "Pink";
-                    serialCommand("7");
-                    isColorChange = 7;
-                }
+                //// Pink color
+                //if (pixelColor.R > 100 && pixelColor.G < 100 && pixelColor.B > 100)
+                //{
+                //    // Send data to Arduino
+                //    // ...
+                //    lbColor.Text = "Pink";
+                //    serialCommand("7");
+                //    isColorChange = 7;
+                //}
                 //
             }        
         }
