@@ -323,40 +323,44 @@
             this.toolStripStatusSentData,
             this.toolStripStatusParameter,
             this.toolStripStatusSerialData});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 514);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 512);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(916, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(916, 24);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // toolStripStatusLogin
             // 
             this.toolStripStatusLogin.Name = "toolStripStatusLogin";
-            this.toolStripStatusLogin.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusLogin.Size = new System.Drawing.Size(118, 19);
             this.toolStripStatusLogin.Text = "toolStripStatusLabel1";
             // 
             // toolStripStatusConnectSerialPort
             // 
+            this.toolStripStatusConnectSerialPort.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
             this.toolStripStatusConnectSerialPort.Name = "toolStripStatusConnectSerialPort";
-            this.toolStripStatusConnectSerialPort.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusConnectSerialPort.Size = new System.Drawing.Size(122, 19);
             this.toolStripStatusConnectSerialPort.Text = "toolStripStatusLabel2";
             // 
             // toolStripStatusSentData
             // 
+            this.toolStripStatusSentData.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
             this.toolStripStatusSentData.Name = "toolStripStatusSentData";
-            this.toolStripStatusSentData.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusSentData.Size = new System.Drawing.Size(122, 19);
             this.toolStripStatusSentData.Text = "toolStripStatusLabel1";
             // 
             // toolStripStatusParameter
             // 
+            this.toolStripStatusParameter.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
             this.toolStripStatusParameter.Name = "toolStripStatusParameter";
-            this.toolStripStatusParameter.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusParameter.Size = new System.Drawing.Size(122, 19);
             this.toolStripStatusParameter.Text = "toolStripStatusLabel1";
             // 
             // toolStripStatusSerialData
             // 
+            this.toolStripStatusSerialData.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
             this.toolStripStatusSerialData.Name = "toolStripStatusSerialData";
-            this.toolStripStatusSerialData.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusSerialData.Size = new System.Drawing.Size(122, 19);
             this.toolStripStatusSerialData.Text = "toolStripStatusLabel1";
             // 
             // menuStrip1
@@ -383,14 +387,14 @@
             // 
             this.loginToolStripMenuItem.Image = global::RGB_Detection.Properties.Resources._password_32;
             this.loginToolStripMenuItem.Name = "loginToolStripMenuItem";
-            this.loginToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.loginToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.loginToolStripMenuItem.Text = "Login";
             this.loginToolStripMenuItem.Click += new System.EventHandler(this.loginToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Visible = false;
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
@@ -398,7 +402,7 @@
             // parameterToolStripMenuItem
             // 
             this.parameterToolStripMenuItem.Name = "parameterToolStripMenuItem";
-            this.parameterToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.parameterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.parameterToolStripMenuItem.Text = "Parameter";
             this.parameterToolStripMenuItem.Visible = false;
             // 

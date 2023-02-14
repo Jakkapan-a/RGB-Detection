@@ -91,11 +91,12 @@ if (stringComplete) {  // If state complete is true
     }else
     if(inputString == "2") {
       AC.off();
+      countDownRed = setCountRed;
       Alarm.on();
     }else
     if(inputString == "3") {
       // AC.off();
-      countDownRed = setCountRed;
+
       Alarm.off();
     }else
     if(inputString == "4") {

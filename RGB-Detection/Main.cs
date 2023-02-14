@@ -39,6 +39,7 @@ namespace RGB_Detection
             btRefresh.PerformClick();
        
             loadRectangle();
+
             if(rect != Rectangle.Empty)
             {
                 scrollPictureBox.SetRectangle(rect);
