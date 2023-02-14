@@ -73,6 +73,16 @@ namespace RGB_Detection.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _password_32 {
+            get {
+                object obj = ResourceManager.GetObject("_password_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap _refresh_32 {
             get {
                 object obj = ResourceManager.GetObject("_refresh_32", resourceCulture);

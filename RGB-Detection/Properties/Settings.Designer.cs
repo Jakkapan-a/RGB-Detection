@@ -23,12 +23,51 @@ namespace RGB_Detection.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string W {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int rect_x {
             get {
-                return ((string)(this["W"]));
+                return ((int)(this["rect_x"]));
+            }
+            set {
+                this["rect_x"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int rect_y {
+            get {
+                return ((int)(this["rect_y"]));
+            }
+            set {
+                this["rect_y"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int rect_width {
+            get {
+                return ((int)(this["rect_width"]));
+            }
+            set {
+                this["rect_width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int rect_height {
+            get {
+                return ((int)(this["rect_height"]));
+            }
+            set {
+                this["rect_height"] = value;
             }
         }
     }

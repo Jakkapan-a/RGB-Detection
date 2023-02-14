@@ -17,8 +17,9 @@ namespace TConstrols
         System.Drawing.Point LocationXY;
         System.Drawing.Point LocationX1Y1;
         bool IsMouseDown = false;
-        public bool isScrol { get; set; }
+        public bool isScroll { get; set; }
 
+        public bool privateSet { get; set; }
         public Rectangle _Rectangle{
             get
             {
@@ -42,7 +43,7 @@ namespace TConstrols
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseUp);
-            this.isScrol = false;
+            this.isScroll = false;
 
         }
         private void pictureBox_MouseDown(object sender, MouseEventArgs e)
@@ -72,7 +73,7 @@ namespace TConstrols
 
         private void pictureBox_Paint(object sender, PaintEventArgs e)
         {
-            if (Rect != null && isScrol)
+            if (Rect != null && isScroll)
             {
                 e.Graphics.DrawRectangle(Pens.DarkBlue, GetRect());
             }
@@ -86,6 +87,25 @@ namespace TConstrols
             Rect.Width = Math.Abs(LocationXY.X - LocationX1Y1.X);
             Rect.Height = Math.Abs(LocationXY.Y - LocationX1Y1.Y);
             return Rect;
+        }
+        
+        public void Clear()
+        {
+            Rect = Rectangle.Empty;
+            Refresh();
+        }
+
+        public void SetRectangle(Rectangle rect)
+        {
+            if(!isScroll){
+                isScroll = true;
+                Rect = rect;
+                // Trigger the event paint to draw the rectangle
+                Refresh();
+                isScroll = false;
+            }
+            Rect = rect;
+            Refresh();
         }
     }
 }

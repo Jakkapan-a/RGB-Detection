@@ -1,4 +1,6 @@
 ﻿using DirectShowLib;
+using LogWriter;
+using RGB_Detection.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,6 +9,7 @@ using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -18,6 +21,9 @@ namespace RGB_Detection
         public string[] baudList = { "9600", "19200", "38400", "57600", "115200" };
         private int driveindex = 0;
         private TCapture.Capture capture;
+        Rectangle rect;
+
+        private LogFile LogWriter;
         public Main()
         {
             InitializeComponent();
@@ -25,63 +31,98 @@ namespace RGB_Detection
 
         private void Main_Load(object sender, EventArgs e)
         {
-            scrolPictureBox.isScrol= true;
+            scrollPictureBox.isScroll= false;
             capture = new TCapture.Capture();
             capture.OnFrameHeadler += Capture_OnFrameHeadler;
             capture.OnVideoStarted += Capture_OnVideoStarted;
             capture.OnVideoStop += Capture_OnVideoStop;
-            // Set size capture
-            capture.frameRate = 100;
             btRefresh.PerformClick();
-            timer_get.Interval = 1000;
-            timer_get.Start();
+       
+
+            loadRectangle();
+            if(rect != Rectangle.Empty)
+            {
+                scrollPictureBox.SetRectangle(rect);
+            }
+            LogWriter = new LogFile();
+            LogWriter.SaveLog("Satrting...");
+
+        }
+        private void SaveRectangle()
+        {
+            rect = scrollPictureBox.Rect;
+            if (rect != Rectangle.Empty && scrollPictureBox.isScroll)
+            {
+                Properties.Settings.Default.rect_x = rect.X;
+                Properties.Settings.Default.rect_y = rect.Y;
+                Properties.Settings.Default.rect_width = rect.Width;
+                Properties.Settings.Default.rect_height = rect.Height;
+                Properties.Settings.Default.Save();
+
+                scrollPictureBox.isScroll = false;
+                loginToolStripMenuItem.Text = "Login";
+                toolStripStatusLogin.Text = "Logout";
+                saveToolStripMenuItem.Visible = false;
+                MessageBox.Show("Save Rectangle Success", "Save Rectangle", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }else
+            {
+                MessageBox.Show("Please select a rectangle or login", "Save Rectangle", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
+        private void loadRectangle(){
+            if(Properties.Settings.Default.rect_x != 0 && Properties.Settings.Default.rect_y != 0 && Properties.Settings.Default.rect_width != 0 && Properties.Settings.Default.rect_height != 0)
+            {
+                rect = new Rectangle(Properties.Settings.Default.rect_x, Properties.Settings.Default.rect_y, Properties.Settings.Default.rect_width, Properties.Settings.Default.rect_height);
+            }
+        }
         private void Capture_OnVideoStop()
         {
-            if (scrolPictureBox.InvokeRequired)
+            timer_get.Stop();
+            if (scrollPictureBox.InvokeRequired)
             {
-                scrolPictureBox.Invoke(new Action(()=>scrolPictureBox.Image = null));
+                scrollPictureBox.Invoke(new Action(()=>scrollPictureBox.Image = null));
                 return;
             }
-            scrolPictureBox.Image = null;
+            scrollPictureBox.Image = null;
         }
-
-        Rectangle rect = new Rectangle();
+            
         private void Capture_OnVideoStarted()
         {
-            //rect = scrolPictureBox.Rect;
+            timer_get.Start();
         }
 
         private delegate void FrameVideo(Bitmap bitmap);
         Bitmap bmp;
         private void Capture_OnFrameHeadler(Bitmap bitmap)
         {
-            if (scrolPictureBox.InvokeRequired)
+            if (scrollPictureBox.InvokeRequired)
             {
-                scrolPictureBox.Invoke(new FrameVideo(Capture_OnFrameHeadler), bitmap);
+                scrollPictureBox.Invoke(new FrameVideo(Capture_OnFrameHeadler), bitmap);
                 return;
             }
-            scrolPictureBox.SuspendLayout();
-            scrolPictureBox.Image = (Image)bitmap.Clone();
-            rect = scrolPictureBox._Rectangle;
+            scrollPictureBox.SuspendLayout();
+            scrollPictureBox.Image = (Image)bitmap.Clone();
+            if (scrollPictureBox.isScroll)
+            {
+                rect = scrollPictureBox._Rectangle;
+            }
             if (rect != Rectangle.Empty){
                 // Crop image to picture box RGB
                 bmp = new Bitmap(rect.Width, rect.Height);
                 
                 using(Graphics g = Graphics.FromImage(bmp))
                 {
-                    g.DrawImage(scrolPictureBox.Image, new Rectangle(0, 0, bmp.Width, bmp.Height), rect, GraphicsUnit.Pixel);
+                    g.DrawImage(scrollPictureBox.Image, new Rectangle(0, 0, bmp.Width, bmp.Height), rect, GraphicsUnit.Pixel);
                 }
                 pictureBoxRGB.Image = (Image)bmp.Clone();
-                // Center of the picture box
             }
-            scrolPictureBox.ResumeLayout();
+            scrollPictureBox.ResumeLayout();
         }
 
         private void timer_get_Tick(object sender, EventArgs e)
         {
-            if (bmp != null && scrolPictureBox._Rectangle != Rectangle.Empty && rect != Rectangle.Empty)
+            if (bmp != null && scrollPictureBox._Rectangle != Rectangle.Empty && rect != Rectangle.Empty)
             {
                 //Center of the picture box
                 int x = bmp.Width / 2;
@@ -92,7 +133,66 @@ namespace RGB_Detection
                 txtGreen.Text = pixelColor.G.ToString();
                 txtBlue.Text = pixelColor.B.ToString();
                 // Test Process
-                    
+                // Green color
+                if (pixelColor.R < 100 && pixelColor.G > 100 && pixelColor.B < 100)
+                {
+                    // Send data to Arduino
+                    // ...
+                    lbColor.Text = "Green";
+                    serialCommand("1");
+                }
+
+                // Red color
+                if (pixelColor.R > 100 && pixelColor.G < 100 && pixelColor.B < 100)
+                {
+                    // Send data to Arduino
+                    // ...
+                    lbColor.Text = "Red";
+                    serialCommand("2");
+                }
+                // Blue color
+                if (pixelColor.R < 100 && pixelColor.G < 100 && pixelColor.B > 100)
+                {
+                    // Send data to Arduino
+                    // ...
+                    lbColor.Text = "Blue";
+                    serialCommand("3");
+                }
+
+                // Black color
+                if (pixelColor.R < 100 && pixelColor.G < 100 && pixelColor.B < 100)
+                {
+                    // Send data to Arduino
+                    // ...
+                    lbColor.Text = "Black";
+                    serialCommand("4");
+                }
+
+                // White color'
+                if (pixelColor.R > 100 && pixelColor.G > 100 && pixelColor.B > 100)
+                {
+                    // Send data to Arduino
+                    // ...
+                    lbColor.Text = "White";
+                    serialCommand("5");
+                }
+                // Yellow color
+                if (pixelColor.R > 100 && pixelColor.G > 100 && pixelColor.B < 100)
+                {
+                    // Send data to Arduino
+                    // ...
+                    lbColor.Text = "Yellow";
+                    serialCommand("6");
+                }
+
+                // Pink color
+                if (pixelColor.R > 100 && pixelColor.G < 100 && pixelColor.B > 100)
+                {
+                    // Send data to Arduino
+                    // ...
+                    lbColor.Text = "Pink";
+                    serialCommand("7");
+                }
                 //
             }        
         }
@@ -184,5 +284,135 @@ namespace RGB_Detection
                 capture.Dispose();
             }
         }
+        Forms._Login login;
+        private void loginToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!scrollPictureBox.isScroll)
+            {
+                if(login != null)
+                {
+                    login.Close();
+                    login = null;
+                }
+
+                login = new Forms._Login(this);
+                login.Show();
+            }
+            else
+            {
+                scrollPictureBox.isScroll = false;
+                loginToolStripMenuItem.Text = "Login";
+                toolStripStatusLogin.Text = "Logout";
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveRectangle();
+        }
+
+         #region Serial Port 
+        public string serialportName = string.Empty;
+
+        public string baudrate = string.Empty;
+
+        public string readDataSerial = string.Empty;
+
+        public string dataSerialReceived = string.Empty;
+
+        public bool is_Blink_NG = false;
+
+        public void setSerialPort(string portName, string baud)
+        {
+            this.serialportName = portName;
+            this.baudrate = baud;
+
+        }
+
+        private void serialConnect(string portName, int baud)
+        {
+            try
+            {
+                if (this.serialPort.IsOpen)
+                {
+                    this.serialPort.Close();
+                }
+
+                this.serialPort.PortName = portName;
+                this.serialPort.BaudRate = baud;
+                this.serialPort.Open();
+                this.serialCommand("conn");
+                Thread.Sleep(50);
+                this.serialCommand("conn");
+                this.toolStripStatusConnectSerialPort.Text = "Serial Connected";
+                this.toolStripStatusConnectSerialPort.ForeColor = Color.Green;
+
+            }
+            catch (Exception ex)
+            {
+                LogWriter.SaveLog("Error :" + ex.Message);
+                this.toolStripStatusConnectSerialPort.Text = "Serial Port: Disconnect";
+                this.toolStripStatusConnectSerialPort.ForeColor = Color.Red;
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        public void serialConnect()
+        {
+
+            if (this.serialportName == string.Empty || this.baudrate == string.Empty)
+            {
+                MessageBox.Show("Please select serial port and baud rate", "Exclamation", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            this.serialConnect(this.serialportName, int.Parse(this.baudrate));
+        }
+
+        public void serialCommand(string command)
+        {
+            if (this.serialPort.IsOpen)
+            {
+                this.serialPort.Write(">" + command + "<#");
+                LogWriter.SaveLog("Serial send : " + command);
+                toolStripStatusSentData.Text = "Send : "+ command;
+            }
+        }
+
+        private void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            try
+            {
+                readDataSerial = this.serialPort.ReadExisting();
+                this.Invoke(new EventHandler(dataReceived));
+            }
+            catch (Exception ex)
+            {
+                LogWriter.SaveLog("Error :" + ex.Message);
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void dataReceived(object sender, EventArgs e)
+        {
+            this.dataSerialReceived += readDataSerial;
+            if (dataSerialReceived.Contains(">") && dataSerialReceived.Contains("<"))
+            {
+                string data = this.dataSerialReceived.Replace("\r", string.Empty).Replace("\n", string.Empty);
+                data = data.Substring(data.IndexOf(">") + 1, data.IndexOf("<") - 1);
+                this.dataSerialReceived = string.Empty;
+                data = data.Replace(">", "").Replace("<", "");
+                toolStripStatusSerialData.Text = "DATA :" + data;
+                LogWriter.SaveLog("Serial Received : " + data);
+                if (data == "rst" || data.Contains("rst"))
+                {
+                }
+            }
+            else if (!dataSerialReceived.Contains(">"))
+            {
+                this.dataSerialReceived = string.Empty;
+            }
+        }
+        #endregion
     }
 }
