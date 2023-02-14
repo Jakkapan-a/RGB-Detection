@@ -26,7 +26,8 @@ unsigned long last_time_cs = 0;
 // Variables count down
 const int setCount = 6;  // Set count down time 10 seconds
 int countDown = 0;           // Count down time
-
+int countDownRed = 0;
+const int setCountRed = 2; 
 bool stringComplete = false;  // whether the string is complete
 String inputString = "";
 
@@ -50,10 +51,15 @@ void Working() {
   if (millis() - last_time_cs > period) {
     if (countDown > 0) {
       countDown--;
-      Serial.println(countDown);
+      // Serial.println(countDown);
     } else {
       // Serial.println("Count down time is over");
-      Alarm.off();
+      // Alarm.off();
+      if(countDownRed>0){
+        countDownRed--;
+      }else{
+         Alarm.off();
+      }
       AC.off();
     }
 
@@ -89,6 +95,7 @@ if (stringComplete) {  // If state complete is true
     }else
     if(inputString == "3") {
       // AC.off();
+      countDownRed = setCountRed;
       Alarm.off();
     }else
     if(inputString == "4") {
@@ -102,6 +109,4 @@ if (stringComplete) {  // If state complete is true
     stringComplete = false;
   }
   Working();
-
-    count =0;
   }

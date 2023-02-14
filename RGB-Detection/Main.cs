@@ -121,6 +121,10 @@ namespace RGB_Detection
             }
             if (rect != Rectangle.Empty){
                 // Crop image to picture box RGB
+                if(bmp != null)
+                {
+                    bmp.Dispose();  
+                }
                 bmp = new Bitmap(rect.Width, rect.Height);
                 
                 using(Graphics g = Graphics.FromImage(bmp))
@@ -146,7 +150,7 @@ namespace RGB_Detection
                 txtBlue.Text = pixelColor.B.ToString();
                 // Test Process
                 // Green color
-                if (pixelColor.R < 180 && pixelColor.G > 130 && pixelColor.B < 130)
+                if (pixelColor.R < 130 && pixelColor.G > 125 && pixelColor.B < 130)
                 {
                     // Send data to Arduino
                     // ...
@@ -159,7 +163,7 @@ namespace RGB_Detection
                     serialCommand("1");
                 }else
                 // Red color
-                if (pixelColor.R > 160 && pixelColor.G < 120 && pixelColor.B < 140)
+                if (pixelColor.R > 150 && pixelColor.G < 120 && pixelColor.B < 140)
                 {
                     // Send data to Arduino
                     // ...
@@ -168,14 +172,14 @@ namespace RGB_Detection
                     isColorChange = 2;
                 }else
                 // Red color
-                if (pixelColor.R > 80 && pixelColor.R > 140 && pixelColor.G < 90 && pixelColor.B < 90)
+                if (pixelColor.R > 80 && pixelColor.R < 140 && pixelColor.G < 90 && pixelColor.B < 90)
                 {
                     // Send data to Arduino
                     // ...
                     lbColor.Text = "Red";
                     serialCommand("2");
                     isColorChange = 2;
-                }
+                }else
                 // Blue color
                 if (pixelColor.R < 100 && pixelColor.G < 100 && pixelColor.B > 100)
                 {
@@ -185,7 +189,7 @@ namespace RGB_Detection
                     serialCommand("3");
                     isColorChange = 3;
                 }
-
+                else
                 // Black color
                 if (pixelColor.R < 50 && pixelColor.G < 50 && pixelColor.B < 50)
                 {
@@ -304,7 +308,7 @@ namespace RGB_Detection
             comboBoxBaud.Items.Clear();
             comboBoxBaud.Items.AddRange(this.baudList);
             if (comboBoxBaud.Items.Count > 0)
-                comboBoxBaud.SelectedIndex = comboBoxBaud.Items.Count - 1;
+                comboBoxBaud.SelectedIndex = 0;
 
             comboBoxCOMPort.Items.Clear();
             comboBoxCOMPort.Items.AddRange(SerialPort.GetPortNames());
