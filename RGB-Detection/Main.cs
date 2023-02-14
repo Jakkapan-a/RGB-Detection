@@ -38,7 +38,6 @@ namespace RGB_Detection
             capture.OnVideoStop += Capture_OnVideoStop;
             btRefresh.PerformClick();
        
-
             loadRectangle();
             if(rect != Rectangle.Empty)
             {
@@ -47,6 +46,12 @@ namespace RGB_Detection
             LogWriter = new LogFile();
             LogWriter.SaveLog("Satrting...");
 
+        
+            // Status tool strip clear
+            foreach (ToolStripItem item in statusStrip1.Items)
+            {
+                item.Text = "";
+            }
         }
         private void SaveRectangle()
         {
@@ -74,6 +79,7 @@ namespace RGB_Detection
             if(Properties.Settings.Default.rect_x != 0 && Properties.Settings.Default.rect_y != 0 && Properties.Settings.Default.rect_width != 0 && Properties.Settings.Default.rect_height != 0)
             {
                 rect = new Rectangle(Properties.Settings.Default.rect_x, Properties.Settings.Default.rect_y, Properties.Settings.Default.rect_width, Properties.Settings.Default.rect_height);
+                toolStripStatusParameter.Text = "Rectangle: X=" + rect.X + ", Y=" + rect.Y + ", Width=" + rect.Width + ", Height=" + rect.Height;
             }
         }
         private void Capture_OnVideoStop()
@@ -81,8 +87,9 @@ namespace RGB_Detection
            
             if (scrollPictureBox.InvokeRequired)
             {
-                scrollPictureBox.Invoke(new Action(()=>{scrollPictureBox.Image = null;
-                          timer_get.Stop();
+                scrollPictureBox.Invoke(new Action(()=>{
+                    scrollPictureBox.Image = null;
+                    timer_get.Stop();
                 }));
                 return;
             }
@@ -253,7 +260,12 @@ namespace RGB_Detection
                 {
                     capture.Stop();
                 }
-                driveindex = comboBoxCamera.SelectedIndex;
+
+                this.serialportName = comboBoxCOMPort.Text;
+                this.baudrate = comboBoxBaud.Text;
+                    serialConnect();
+
+                    driveindex = comboBoxCamera.SelectedIndex;
 
                 Task.Factory.StartNew(() => capture.Start(driveindex));
 
@@ -309,6 +321,7 @@ namespace RGB_Detection
             }
         }
         Forms._Login login;
+
         private void loginToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!scrollPictureBox.isScroll)
@@ -412,8 +425,8 @@ namespace RGB_Detection
             }
             catch (Exception ex)
             {
-                LogWriter.SaveLog("Error :" + ex.Message);
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LogWriter.SaveLog("Error Serial :" + ex.Message);
+                //MessageBox.Show(ex.Message, "Error Serial", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

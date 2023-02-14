@@ -19,7 +19,7 @@ Color code
   7. Pink
 */
 
-unsigned long period = 500;
+unsigned long period = 1000;
 int period_overspend = -1000;
 unsigned long last_time_cs = 0;
 
@@ -46,13 +46,13 @@ void serialEvent() {
     inputString += inChar;
   }
 }
-oid Working() {
+void Working() {
   if (millis() - last_time_cs > period) {
     if (countDown > 0) {
       countDown--;
       Serial.println(countDown);
     } else {
-      Serial.println("Count down time is over");
+      // Serial.println("Count down time is over");
       Alarm.off();
       AC.off();
     }
@@ -71,6 +71,8 @@ void serialCommand(String command) {
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
+        AC.off();
+      Alarm.off();
 }
 
 void loop() {
@@ -86,17 +88,20 @@ if (stringComplete) {  // If state complete is true
       Alarm.on();
     }else
     if(inputString == "3") {
-      AC.off();
+      // AC.off();
       Alarm.off();
     }else
     if(inputString == "4") {
-      AC.off();
+      // AC.off();
+
       Alarm.off();
-    }
-    
+    }    
+    delay(40);
     serialCommand(inputString);
     inputString = "";
     stringComplete = false;
+  }
+  Working();
+
     count =0;
   }
-}

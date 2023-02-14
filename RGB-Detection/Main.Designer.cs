@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.scrollPictureBox = new TConstrols.ScrolPictureBox();
             this.groupBox = new System.Windows.Forms.GroupBox();
             this.txtBlue = new System.Windows.Forms.TextBox();
             this.txtGreen = new System.Windows.Forms.TextBox();
@@ -53,28 +54,27 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLogin = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusConnectSerialPort = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusSentData = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusParameter = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusSerialData = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.systemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.parameterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer_get = new System.Windows.Forms.Timer(this.components);
-            this.scrollPictureBox = new TConstrols.ScrolPictureBox();
             this.serialPort = new System.IO.Ports.SerialPort(this.components);
-            this.toolStripStatusSentData = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusParameter = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusSerialData = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.scrollPictureBox)).BeginInit();
             this.groupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRGB)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.scrollPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -98,6 +98,18 @@
             this.splitContainer1.Size = new System.Drawing.Size(892, 462);
             this.splitContainer1.SplitterDistance = 600;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // scrollPictureBox
+            // 
+            this.scrollPictureBox._Rectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
+            this.scrollPictureBox.isScroll = false;
+            this.scrollPictureBox.Location = new System.Drawing.Point(13, 22);
+            this.scrollPictureBox.Name = "scrollPictureBox";
+            this.scrollPictureBox.privateSet = false;
+            this.scrollPictureBox.Size = new System.Drawing.Size(567, 422);
+            this.scrollPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.scrollPictureBox.TabIndex = 0;
+            this.scrollPictureBox.TabStop = false;
             // 
             // groupBox
             // 
@@ -329,6 +341,24 @@
             this.toolStripStatusConnectSerialPort.Size = new System.Drawing.Size(118, 17);
             this.toolStripStatusConnectSerialPort.Text = "toolStripStatusLabel2";
             // 
+            // toolStripStatusSentData
+            // 
+            this.toolStripStatusSentData.Name = "toolStripStatusSentData";
+            this.toolStripStatusSentData.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusSentData.Text = "toolStripStatusLabel1";
+            // 
+            // toolStripStatusParameter
+            // 
+            this.toolStripStatusParameter.Name = "toolStripStatusParameter";
+            this.toolStripStatusParameter.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusParameter.Text = "toolStripStatusLabel1";
+            // 
+            // toolStripStatusSerialData
+            // 
+            this.toolStripStatusSerialData.Name = "toolStripStatusSerialData";
+            this.toolStripStatusSerialData.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusSerialData.Text = "toolStripStatusLabel1";
+            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -353,14 +383,14 @@
             // 
             this.loginToolStripMenuItem.Image = global::RGB_Detection.Properties.Resources._password_32;
             this.loginToolStripMenuItem.Name = "loginToolStripMenuItem";
-            this.loginToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loginToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.loginToolStripMenuItem.Text = "Login";
             this.loginToolStripMenuItem.Click += new System.EventHandler(this.loginToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Visible = false;
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
@@ -368,7 +398,7 @@
             // parameterToolStripMenuItem
             // 
             this.parameterToolStripMenuItem.Name = "parameterToolStripMenuItem";
-            this.parameterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.parameterToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.parameterToolStripMenuItem.Text = "Parameter";
             this.parameterToolStripMenuItem.Visible = false;
             // 
@@ -377,35 +407,9 @@
             this.timer_get.Interval = 500;
             this.timer_get.Tick += new System.EventHandler(this.timer_get_Tick);
             // 
-            // scrollPictureBox
+            // serialPort
             // 
-            this.scrollPictureBox._Rectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.scrollPictureBox.isScroll = false;
-            this.scrollPictureBox.Location = new System.Drawing.Point(13, 22);
-            this.scrollPictureBox.Name = "scrollPictureBox";
-            this.scrollPictureBox.privateSet = false;
-            this.scrollPictureBox.Size = new System.Drawing.Size(567, 422);
-            this.scrollPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.scrollPictureBox.TabIndex = 0;
-            this.scrollPictureBox.TabStop = false;
-            // 
-            // toolStripStatusSentData
-            // 
-            this.toolStripStatusSentData.Name = "toolStripStatusSentData";
-            this.toolStripStatusSentData.Size = new System.Drawing.Size(118, 17);
-            this.toolStripStatusSentData.Text = "toolStripStatusLabel1";
-            // 
-            // toolStripStatusParameter
-            // 
-            this.toolStripStatusParameter.Name = "toolStripStatusParameter";
-            this.toolStripStatusParameter.Size = new System.Drawing.Size(118, 17);
-            this.toolStripStatusParameter.Text = "toolStripStatusLabel1";
-            // 
-            // toolStripStatusSerialData
-            // 
-            this.toolStripStatusSerialData.Name = "toolStripStatusSerialData";
-            this.toolStripStatusSerialData.Size = new System.Drawing.Size(118, 17);
-            this.toolStripStatusSerialData.Text = "toolStripStatusLabel1";
+            this.serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort_DataReceived);
             // 
             // Main
             // 
@@ -428,6 +432,7 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.scrollPictureBox)).EndInit();
             this.groupBox.ResumeLayout(false);
             this.groupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRGB)).EndInit();
@@ -438,7 +443,6 @@
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.scrollPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
