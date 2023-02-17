@@ -30,7 +30,12 @@ namespace RGB_Detection
         }
 
         private void Main_Load(object sender, EventArgs e)
-        {
+        { 
+            // Status tool strip clear
+            foreach (ToolStripItem item in statusStrip1.Items)
+            {
+                item.Text = "";
+            }
             scrollPictureBox.isScroll= false;
             capture = new TCapture.Capture();
             capture.OnFrameHeadler += Capture_OnFrameHeadler;
@@ -48,11 +53,7 @@ namespace RGB_Detection
             LogWriter.SaveLog("Satrting...");
 
         
-            // Status tool strip clear
-            foreach (ToolStripItem item in statusStrip1.Items)
-            {
-                item.Text = "";
-            }
+         
         }
         private void SaveRectangle()
         {
@@ -95,7 +96,6 @@ namespace RGB_Detection
                 return;
             }
             scrollPictureBox.Image = null;
-  
         }
             
         private void Capture_OnVideoStarted()
@@ -133,10 +133,17 @@ namespace RGB_Detection
                     g.DrawImage(scrollPictureBox.Image, new Rectangle(0, 0, bmp.Width, bmp.Height), rect, GraphicsUnit.Pixel);
                 }
                 pictureBoxRGB.Image = (Image)bmp.Clone();
+                // Draw Rectangle to Image
+                using (Graphics g = Graphics.FromImage(scrollPictureBox.Image))
+                {
+                    g.DrawRectangle(new Pen(Color.Red, 2), rect);
+                }
+                
             }
             scrollPictureBox.ResumeLayout();
         }
         private int isColorChange = 0;
+        
         private void timer_get_Tick(object sender, EventArgs e)
         {
             if (bmp != null && scrollPictureBox._Rectangle != Rectangle.Empty && rect != Rectangle.Empty)
@@ -151,7 +158,7 @@ namespace RGB_Detection
                 txtBlue.Text = pixelColor.B.ToString();
                 // Test Process
                 // Green color
-                if (pixelColor.R < 130 && pixelColor.G > 125 && pixelColor.B < 130)
+                if (pixelColor.R < 130 && pixelColor.G > 125 && pixelColor.B < 145)
                 {
                     // Send data to Arduino
                     // ...

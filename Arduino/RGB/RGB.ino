@@ -27,7 +27,7 @@ unsigned long last_time_cs = 0;
 const int setCount = 6;  // Set count down time 10 seconds
 int countDown = 0;           // Count down time
 int countDownRed = 0;
-const int setCountRed = 2; 
+const int setCountRed = 1; 
 bool stringComplete = false;  // whether the string is complete
 String inputString = "";
 
