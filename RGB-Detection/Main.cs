@@ -158,55 +158,60 @@ namespace RGB_Detection
                 txtBlue.Text = pixelColor.B.ToString();
                 // Test Process
                 // Green color
-                if (pixelColor.R < 130 && pixelColor.G > 125 && pixelColor.B < 145)
-                {
-                    // Send data to Arduino
-                    // ...
-                    lbColor.Text = "Green";
-                    // if(isColorChange != 1)
-                    // {
-                    //     serialCommand("1");
-                    //     isColorChange = 1;
-                    // }
-                    serialCommand("1");
-                }else
-                // Red color
-                if (pixelColor.R > 150 && pixelColor.G < 120 && pixelColor.B < 140)
-                {
-                    // Send data to Arduino
-                    // ...
-                    lbColor.Text = "Red";
-                    serialCommand("2");
-                    isColorChange = 2;
-                }else
-                // Red color
-                if (pixelColor.R > 80 && pixelColor.R < 140 && pixelColor.G < 90 && pixelColor.B < 90)
-                {
-                    // Send data to Arduino
-                    // ...
-                    lbColor.Text = "Red";
-                    serialCommand("2");
-                    isColorChange = 2;
-                }else
-                // Blue color
-                if (pixelColor.R < 100 && pixelColor.G < 100 && pixelColor.B > 100)
-                {
-                    // Send data to Arduino
-                    // ...
-                    lbColor.Text = "Blue";
-                    serialCommand("3");
-                    isColorChange = 3;
-                }
-                else
-                // Black color
-                if (pixelColor.R < 50 && pixelColor.G < 50 && pixelColor.B < 50)
-                {
-                    // Send data to Arduino
-                    // ...
-                    lbColor.Text = "Black";
-                    serialCommand("4");
-                    isColorChange = 4;
-                }
+                //if (pixelColor.R < 130 && pixelColor.G > 125 && pixelColor.B < 145)
+                //{
+                //    // Send data to Arduino
+                //    // ...
+                //    lbColor.Text = "Green";
+                //    // if(isColorChange != 1)
+                //    // {
+                //    //     serialCommand("1");
+                //    //     isColorChange = 1;
+                //    // }
+                //    serialCommand("1");
+                //}else
+                //// Red color
+                //if (pixelColor.R > 150 && pixelColor.G < 120 && pixelColor.B < 140)
+                //{
+                //    // Send data to Arduino
+                //    // ...
+                //    lbColor.Text = "Red";
+                //    serialCommand("2");
+                //    isColorChange = 2;
+                //}else
+                //// Red color
+                //if (pixelColor.R > 80 && pixelColor.R < 140 && pixelColor.G < 90 && pixelColor.B < 90)
+                //{
+                //    // Send data to Arduino
+                //    // ...
+                //    lbColor.Text = "Red";
+                //    serialCommand("2");
+                //    isColorChange = 2;
+                //}else
+                //// Blue color
+                //if (pixelColor.R < 100 && pixelColor.G < 100 && pixelColor.B > 100)
+                //{
+                //    // Send data to Arduino
+                //    // ...
+                //    lbColor.Text = "Blue";
+                //    serialCommand("3");
+                //    isColorChange = 3;
+                //}
+                //else
+                //// Black color
+                //if (pixelColor.R < 50 && pixelColor.G < 50 && pixelColor.B < 50)
+                //{
+                //    // Send data to Arduino
+                //    // ...
+                //    lbColor.Text = "Black";
+                //    serialCommand("4");
+                //    isColorChange = 4;
+                //}
+                //else
+                //{
+                //    lbColor.Text = "Non!";
+                //    serialCommand("4"); 
+                //}
 
                 // White color'
                 //if (pixelColor.R > 100 && pixelColor.G > 100 && pixelColor.B > 100)
@@ -336,23 +341,28 @@ namespace RGB_Detection
 
         private void loginToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!scrollPictureBox.isScroll)
-            {
-                if(login != null)
-                {
-                    login.Close();
-                    login = null;
-                }
+            //if (!scrollPictureBox.isScroll)
+            //{
+            //    if(login != null)
+            //    {
+            //        login.Close();
+            //        login = null;
+            //    }
 
-                login = new Forms._Login(this);
-                login.Show();
-            }
-            else
-            {
-                scrollPictureBox.isScroll = false;
-                loginToolStripMenuItem.Text = "Login";
-                toolStripStatusLogin.Text = "Logout";
-            }
+            //    login = new Forms._Login(this);
+            //    login.Show();
+            //}
+            //else
+            //{
+            //    scrollPictureBox.isScroll = false;
+            //    loginToolStripMenuItem.Text = "Login";
+            //    toolStripStatusLogin.Text = "Logout";
+            //}
+            this.scrollPictureBox.isScroll = true;
+            this.loginToolStripMenuItem.Text = "Logout";
+            this.saveToolStripMenuItem.Visible = true;
+            this.toolStripStatusLogin.Text = "Login";
+
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
