@@ -24,9 +24,12 @@ namespace RGB_Detection
         Rectangle rect;
 
         private LogFile LogWriter;
+        private Color_name.Color colorName_;
+        private string[] color_name;
         public Main()
         {
             InitializeComponent();
+            colorName_ = new Color_name.Color();
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -70,10 +73,10 @@ namespace RGB_Detection
                 loginToolStripMenuItem.Text = "Login";
                 toolStripStatusLogin.Text = "Logout";
                 saveToolStripMenuItem.Visible = false;
-                MessageBox.Show("Save Rectangle Success", "Save Rectangle", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Save Success", "Save", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }else
             {
-                MessageBox.Show("Please select a rectangle or login", "Save Rectangle", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please select image", "Save", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -125,6 +128,7 @@ namespace RGB_Detection
                 if(bmp != null)
                 {
                     bmp.Dispose();  
+                    bmp = null;
                 }
                 bmp = new Bitmap(rect.Width, rect.Height);
                 
@@ -137,13 +141,10 @@ namespace RGB_Detection
                 using (Graphics g = Graphics.FromImage(scrollPictureBox.Image))
                 {
                     g.DrawRectangle(new Pen(Color.Red, 2), rect);
-                }
-                
+                }                
             }
             scrollPictureBox.ResumeLayout();
         }
-        private int isColorChange = 0;
-        
         private void timer_get_Tick(object sender, EventArgs e)
         {
             if (bmp != null && scrollPictureBox._Rectangle != Rectangle.Empty && rect != Rectangle.Empty)
@@ -156,6 +157,34 @@ namespace RGB_Detection
                 txtRed.Text = pixelColor.R.ToString();
                 txtGreen.Text = pixelColor.G.ToString();
                 txtBlue.Text = pixelColor.B.ToString();
+
+
+                color_name = colorName_.Name(colorName_.RgbToHex(pixelColor.R, pixelColor.G, pixelColor.B));
+                lbColor.Text = color_name[3];
+                if (color_name[3].ToLower() == "black" || (pixelColor.R <40 && pixelColor.G<40 && pixelColor.B <40))
+                {
+                    serialCommand("4");
+                    //Console.WriteLine("Black");
+                }
+                else
+                if (color_name[3].ToLower() == "red")
+                {
+                    serialCommand("2");
+                    //Console.WriteLine("Red");
+                }
+                else
+                if (color_name[3].ToLower() == "green")
+                {
+                    serialCommand("1");
+                    //Console.WriteLine("Green");
+                }
+                else
+                {
+                    serialCommand("4");
+                    //Console.WriteLine("Non");
+                }
+
+                #region Old
                 // Test Process
                 // Green color
                 //if (pixelColor.R < 130 && pixelColor.G > 125 && pixelColor.B < 145)
@@ -241,8 +270,9 @@ namespace RGB_Detection
                 //    serialCommand("7");
                 //    isColorChange = 7;
                 //}
-                //
-            }        
+
+                #endregion
+            }
         }
 
         private void btConnect_Click(object sender, EventArgs e)
