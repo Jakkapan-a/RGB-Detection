@@ -33,6 +33,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.scrollPictureBox = new TConstrols.ScrolPictureBox();
             this.groupBox = new System.Windows.Forms.GroupBox();
+            this.lbResult = new System.Windows.Forms.Label();
             this.txtBlue = new System.Windows.Forms.TextBox();
             this.txtGreen = new System.Windows.Forms.TextBox();
             this.txtRed = new System.Windows.Forms.TextBox();
@@ -95,7 +96,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox);
             this.splitContainer1.Panel2.Controls.Add(this.groupBox1);
-            this.splitContainer1.Size = new System.Drawing.Size(892, 462);
+            this.splitContainer1.Size = new System.Drawing.Size(892, 504);
             this.splitContainer1.SplitterDistance = 600;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -116,6 +117,7 @@
             this.groupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox.Controls.Add(this.lbResult);
             this.groupBox.Controls.Add(this.txtBlue);
             this.groupBox.Controls.Add(this.txtGreen);
             this.groupBox.Controls.Add(this.txtRed);
@@ -126,10 +128,25 @@
             this.groupBox.Controls.Add(this.pictureBoxRGB);
             this.groupBox.Location = new System.Drawing.Point(3, 3);
             this.groupBox.Name = "groupBox";
-            this.groupBox.Size = new System.Drawing.Size(280, 264);
+            this.groupBox.Size = new System.Drawing.Size(280, 306);
             this.groupBox.TabIndex = 0;
             this.groupBox.TabStop = false;
             this.groupBox.Text = "Setting";
+            // 
+            // lbResult
+            // 
+            this.lbResult.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbResult.BackColor = System.Drawing.Color.Yellow;
+            this.lbResult.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbResult.Location = new System.Drawing.Point(47, 217);
+            this.lbResult.Name = "lbResult";
+            this.lbResult.Size = new System.Drawing.Size(206, 73);
+            this.lbResult.TabIndex = 4;
+            this.lbResult.Text = "WAIT";
+            this.lbResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtBlue
             // 
@@ -214,7 +231,7 @@
             this.groupBox1.Controls.Add(this.btConnect);
             this.groupBox1.Controls.Add(this.pictureBox2);
             this.groupBox1.Controls.Add(this.btRefresh);
-            this.groupBox1.Location = new System.Drawing.Point(3, 273);
+            this.groupBox1.Location = new System.Drawing.Point(3, 315);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(280, 184);
             this.groupBox1.TabIndex = 0;
@@ -311,7 +328,6 @@
             this.btRefresh.Name = "btRefresh";
             this.btRefresh.Size = new System.Drawing.Size(25, 23);
             this.btRefresh.TabIndex = 0;
-            this.btRefresh.Text = "button1";
             this.btRefresh.UseVisualStyleBackColor = true;
             this.btRefresh.Click += new System.EventHandler(this.btRefresh_Click);
             // 
@@ -323,7 +339,7 @@
             this.toolStripStatusSentData,
             this.toolStripStatusParameter,
             this.toolStripStatusSerialData});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 512);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 554);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(916, 24);
             this.statusStrip1.TabIndex = 1;
@@ -387,14 +403,14 @@
             // 
             this.loginToolStripMenuItem.Image = global::RGB_Detection.Properties.Resources._password_32;
             this.loginToolStripMenuItem.Name = "loginToolStripMenuItem";
-            this.loginToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loginToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.loginToolStripMenuItem.Text = "Login";
             this.loginToolStripMenuItem.Click += new System.EventHandler(this.loginToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Visible = false;
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
@@ -402,7 +418,7 @@
             // parameterToolStripMenuItem
             // 
             this.parameterToolStripMenuItem.Name = "parameterToolStripMenuItem";
-            this.parameterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.parameterToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.parameterToolStripMenuItem.Text = "Parameter";
             this.parameterToolStripMenuItem.Visible = false;
             // 
@@ -419,7 +435,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(916, 536);
+            this.ClientSize = new System.Drawing.Size(916, 578);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.splitContainer1);
@@ -488,6 +504,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusParameter;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusSerialData;
         public System.Windows.Forms.ToolStripStatusLabel toolStripStatusLogin;
+        private System.Windows.Forms.Label lbResult;
     }
 }
 

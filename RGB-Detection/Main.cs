@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TClass;
+using TConstrols;
 
 namespace RGB_Detection
 {
@@ -41,7 +43,7 @@ namespace RGB_Detection
             }
             scrollPictureBox.isScroll= false;
             capture = new TCapture.Capture();
-            capture.OnFrameHeadler += Capture_OnFrameHeadler;
+            capture.OnFrameHeader += Capture_OnFrameHeader;
             capture.OnVideoStarted += Capture_OnVideoStarted;
             capture.OnVideoStop += Capture_OnVideoStop;
             btRefresh.PerformClick();
@@ -110,14 +112,14 @@ namespace RGB_Detection
 
         private delegate void FrameVideo(Bitmap bitmap);
         Bitmap bmp;
-        private void Capture_OnFrameHeadler(Bitmap bitmap)
+        private void Capture_OnFrameHeader(Bitmap bitmap)
         {
-            if (scrollPictureBox.InvokeRequired)
+            if (InvokeRequired)
             {
-                scrollPictureBox.Invoke(new FrameVideo(Capture_OnFrameHeadler), bitmap);
+                Invoke(new Action(() => Capture_OnFrameHeader(bitmap)));
                 return;
             }
-            scrollPictureBox.SuspendLayout();
+            scrollPictureBox.Image?.Dispose();
             scrollPictureBox.Image = (Image)bitmap.Clone();
             if (scrollPictureBox.isScroll)
             {
@@ -125,11 +127,7 @@ namespace RGB_Detection
             }
             if (rect != Rectangle.Empty){
                 // Crop image to picture box RGB
-                if(bmp != null)
-                {
-                    bmp.Dispose();  
-                    bmp = null;
-                }
+                bmp?.Dispose();  
                 bmp = new Bitmap(rect.Width, rect.Height);
                 
                 using(Graphics g = Graphics.FromImage(bmp))
@@ -143,7 +141,6 @@ namespace RGB_Detection
                     g.DrawRectangle(new Pen(Color.Red, 2), rect);
                 }                
             }
-            scrollPictureBox.ResumeLayout();
         }
         private void timer_get_Tick(object sender, EventArgs e)
         {
@@ -165,23 +162,35 @@ namespace RGB_Detection
                 {
                     serialCommand("4");
                     //Console.WriteLine("Black");
+                    lbResult.Text = "WAIT";
+                    lbResult.ForeColor = Color.Black;
+                    lbResult.BackColor = Color.Yellow;
                 }
                 else
                 if (color_name[3].ToLower() == "red")
                 {
                     serialCommand("2");
                     //Console.WriteLine("Red");
+                    lbResult.Text = "NG";
+                    lbResult.ForeColor = Color.Black;
+                    lbResult.BackColor = Color.Red;
                 }
                 else
                 if (color_name[3].ToLower() == "green")
                 {
                     serialCommand("1");
                     //Console.WriteLine("Green");
+                    lbResult.Text = "OK";
+                    lbResult.ForeColor = Color.Black;
+                    lbResult.BackColor = Color.Green;
                 }
                 else
                 {
                     serialCommand("4");
                     //Console.WriteLine("Non");
+                    lbResult.Text = "WAIT";
+                    lbResult.ForeColor = Color.Black;
+                    lbResult.BackColor = Color.Yellow;
                 }
 
                 #region Old
@@ -275,10 +284,17 @@ namespace RGB_Detection
             }
         }
 
-        private void btConnect_Click(object sender, EventArgs e)
+        private Task openTask;
+        private async void btConnect_Click(object sender, EventArgs e)
         {
             try
             {
+                if (openTask != null && openTask.Status == TaskStatus.Running)
+                {
+                    Console.WriteLine("Task is running");
+                    return;
+                }
+                btConnect.Text = "Connecting..";
                 isConnect = !isConnect;
                 if (isConnect)
                 {
@@ -310,13 +326,18 @@ namespace RGB_Detection
 
                 this.serialportName = comboBoxCOMPort.Text;
                 this.baudrate = comboBoxBaud.Text;
-                    serialConnect();
+                serialConnect();
 
                     driveindex = comboBoxCamera.SelectedIndex;
 
-                Task.Factory.StartNew(() => capture.Start(driveindex));
+                    openTask = Task.Run(() =>
+                    {
+                        capture.Start(driveindex);
+                    });
 
-                btConnect.Text = "Disconnect";
+                    await openTask;
+
+                    btConnect.Text = "Disconnect";
                 }
                 else
                 {
@@ -430,8 +451,6 @@ namespace RGB_Detection
                 this.serialPort.PortName = portName;
                 this.serialPort.BaudRate = baud;
                 this.serialPort.Open();
-                this.serialCommand("conn");
-                Thread.Sleep(50);
                 this.serialCommand("conn");
                 this.toolStripStatusConnectSerialPort.Text = "Serial Connected";
                 this.toolStripStatusConnectSerialPort.ForeColor = Color.Green;
