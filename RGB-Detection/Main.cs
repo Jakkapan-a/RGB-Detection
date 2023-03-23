@@ -324,10 +324,12 @@ namespace RGB_Detection
                     capture.Stop();
                 }
 
-                this.serialportName = comboBoxCOMPort.Text;
-                this.baudrate = comboBoxBaud.Text;
-                serialConnect();
-
+                    this.serialportName = comboBoxCOMPort.Text;
+                    this.baudrate = comboBoxBaud.Text;
+                    serialConnect();
+                    btConnect.Text = "Connecting..";
+                    scrollPictureBox.Image?.Dispose();
+                    scrollPictureBox.Image = Properties.Resources.Spinner_0_4s_800px;
                     driveindex = comboBoxCamera.SelectedIndex;
 
                     openTask = Task.Run(() =>
@@ -341,11 +343,16 @@ namespace RGB_Detection
                 }
                 else
                 {
-                if (capture.IsOpened)
-                {
-                    capture.Stop();
-                }
-                btConnect.Text = "Connect";
+                    openTask = Task.Run(() =>
+                    {
+                        capture.Stop();
+                    });
+
+                    await openTask;
+
+                    btConnect.Text = "Connect";
+
+                    scrollPictureBox.Image?.Dispose();
                 }
             }
             catch (Exception ex)

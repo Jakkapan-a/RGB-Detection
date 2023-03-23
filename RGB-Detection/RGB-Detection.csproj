@@ -159,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="camera_identification.ico" />
+    <None Include="Resources\Spinner-0.4s-800px.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
