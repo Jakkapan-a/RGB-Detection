@@ -1,13 +1,8 @@
-#include <PINOUT.h>
-#include <BUTTON.h>
+#include <TcPINOUT.h>
+#include <TcBUTTON.h>
 
-PINOUT Alarm(11);  // NG sound alarm
-PINOUT AC(10);     // On relay contact AC voltage
-BUTTON BTmode_01(15);
-BUTTON BTmode_02(16);
-BUTTON BTmode_03(17);
-BUTTON BTmode_04(18);
-BUTTON BTcal(19);
+TcPINOUT Alarm(11);  // NG sound alarm
+TcPINOUT AC(10);     // On relay contact AC voltage
 /*
 Color code
   1. Green
@@ -51,10 +46,7 @@ void Working() {
   if (millis() - last_time_cs > period) {
     if (countDown > 0) {
       countDown--;
-      // Serial.println(countDown);
     } else {
-      // Serial.println("Count down time is over");
-      // Alarm.off();
       if(countDownRed>0){
         countDownRed--;
       }else{
@@ -96,12 +88,10 @@ if (stringComplete) {  // If state complete is true
     }else
     if(inputString == "3") {
       // AC.off();
-
       Alarm.off();
     }else
     if(inputString == "4") {
       // AC.off();
-
       Alarm.off();
     }    
     delay(40);
