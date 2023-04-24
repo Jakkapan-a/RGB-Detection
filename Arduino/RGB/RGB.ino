@@ -1,8 +1,14 @@
 #include <TcPINOUT.h>
 #include <TcBUTTON.h>
 
-TcPINOUT Alarm(11);  // NG sound alarm
-TcPINOUT AC(10);     // On relay contact AC voltage
+#define ledRedPIN 3 // LED RED
+TcPINOUT LedRED(ledRedPIN);  // NG sound LedRED
+#define ledGreenPIN 4 // LED GREEN
+void Green(bool);
+TcPINOUT ledGREEN(ledGreenPIN,Green);     // On relay contact AC voltage
+
+#define relaySTATUS 2 // Button
+TcPINOUT relayStatus(relaySTATUS,NULL,true);  // Button
 /*
 Color code
   1. Green
@@ -50,17 +56,15 @@ void Working() {
       if(countDownRed>0){
         countDownRed--;
       }else{
-         Alarm.off();
+         LedRED.off();
       }
-      AC.off();
+      ledGREEN.off();
     }
 
     last_time_cs = millis();
-
   } else if (millis() < 1000) {
     last_time_cs = millis();
   }
-
 }
 
 void serialCommand(String command) {
@@ -69,30 +73,30 @@ void serialCommand(String command) {
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-        AC.off();
-      Alarm.off();
+        ledGREEN.off();
+      LedRED.off();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 if (stringComplete) {  // If state complete is true
     if(inputString == "1") {
-      AC.on();
-      Alarm.off();
+      ledGREEN.on();
+      LedRED.off();
       countDown = setCount;
     }else
     if(inputString == "2") {
-      AC.off();
+      ledGREEN.off();
       countDownRed = setCountRed;
-      Alarm.on();
+      LedRED.on();
     }else
     if(inputString == "3") {
-      // AC.off();
-      Alarm.off();
+      // ledGREEN.off();
+      LedRED.off();
     }else
     if(inputString == "4") {
-      // AC.off();
-      Alarm.off();
+      // ledGREEN.off();
+      LedRED.off();
     }    
     delay(40);
     serialCommand(inputString);
@@ -101,3 +105,11 @@ if (stringComplete) {  // If state complete is true
   }
   Working();
   }
+
+void Green(bool state) {
+  if (state) {
+    relayStatus.on();
+  } else {
+    relayStatus.off();
+  }
+}
