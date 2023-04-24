@@ -56,9 +56,6 @@ namespace RGB_Detection
             }
             LogWriter = new LogFile();
             LogWriter.SaveLog("Satrting...");
-
-        
-         
         }
         private void SaveRectangle()
         {

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RGB-Detection", "RGB-Detect
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TConstrols", "TConstrols\TConstrols.csproj", "{BD6168DA-058C-4207-9FC5-1AA9ECF4B1BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RGB-V2", "RGB-V2\RGB-V2.csproj", "{0365887A-0D1F-48D6-A21B-B64D176CBD75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BD6168DA-058C-4207-9FC5-1AA9ECF4B1BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD6168DA-058C-4207-9FC5-1AA9ECF4B1BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD6168DA-058C-4207-9FC5-1AA9ECF4B1BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0365887A-0D1F-48D6-A21B-B64D176CBD75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0365887A-0D1F-48D6-A21B-B64D176CBD75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0365887A-0D1F-48D6-A21B-B64D176CBD75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0365887A-0D1F-48D6-A21B-B64D176CBD75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
