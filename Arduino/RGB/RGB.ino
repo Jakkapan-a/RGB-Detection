@@ -98,7 +98,7 @@ if (stringComplete) {  // If state complete is true
       // ledGREEN.off();
       LedRED.off();
     }    
-    delay(40);
+    delay(10);
     serialCommand(inputString);
     inputString = "";
     stringComplete = false;

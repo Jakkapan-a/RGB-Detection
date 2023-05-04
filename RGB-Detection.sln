@@ -7,7 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RGB-Detection", "RGB-Detect
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TConstrols", "TConstrols\TConstrols.csproj", "{BD6168DA-058C-4207-9FC5-1AA9ECF4B1BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RGB-V2", "RGB-V2\RGB-V2.csproj", "{0365887A-0D1F-48D6-A21B-B64D176CBD75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RGB-V2", "RGB-V2\RGB-V2.csproj", "{0365887A-0D1F-48D6-A21B-B64D176CBD75}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B9877375-FD50-4F9A-91BB-1F2BD3164C6E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
