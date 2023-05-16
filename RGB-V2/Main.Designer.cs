@@ -37,9 +37,10 @@
             toolStripStatusSerialData = new ToolStripStatusLabel();
             toolStripStatusLabelStatus = new ToolStripStatusLabel();
             toolStripStatusSentData = new ToolStripStatusLabel();
+            toolStripStatusLabelRect = new ToolStripStatusLabel();
+            toolStripStatusLabelTimeRGB = new ToolStripStatusLabel();
             splitContainer1 = new SplitContainer();
             pictureBoxCamera = new PictureBox();
-            cbAverageRGB = new CheckBox();
             lbResult = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
             panel1 = new Panel();
@@ -53,6 +54,7 @@
             label7 = new Label();
             pictureBoxRGB = new PictureBox();
             groupBox1 = new GroupBox();
+            cbAverageRGB = new CheckBox();
             pictureBox1 = new PictureBox();
             btReload = new Button();
             btConnect = new Button();
@@ -63,7 +65,6 @@
             cbBaud = new ComboBox();
             cbDrive = new ComboBox();
             lbColor = new Label();
-            toolStripStatusLabelRect = new ToolStripStatusLabel();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -101,42 +102,60 @@
             // 
             editToolStripMenuItem.Image = Properties.Resources.edit_property_32;
             editToolStripMenuItem.Name = "editToolStripMenuItem";
-            editToolStripMenuItem.Size = new Size(180, 22);
+            editToolStripMenuItem.Size = new Size(94, 22);
             editToolStripMenuItem.Text = "Edit";
             editToolStripMenuItem.Click += editToolStripMenuItem_Click;
             // 
             // statusStrip1
             // 
-            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusFrameRate, toolStripStatusSerialData, toolStripStatusLabelStatus, toolStripStatusSentData, toolStripStatusLabelRect });
-            statusStrip1.Location = new Point(0, 595);
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusFrameRate, toolStripStatusSerialData, toolStripStatusLabelStatus, toolStripStatusSentData, toolStripStatusLabelRect, toolStripStatusLabelTimeRGB });
+            statusStrip1.Location = new Point(0, 623);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(1040, 22);
+            statusStrip1.Size = new Size(1040, 24);
             statusStrip1.TabIndex = 1;
             statusStrip1.Text = "statusStrip1";
             // 
             // toolStripStatusFrameRate
             // 
+            toolStripStatusFrameRate.BorderSides = ToolStripStatusLabelBorderSides.Left;
             toolStripStatusFrameRate.Name = "toolStripStatusFrameRate";
-            toolStripStatusFrameRate.Size = new Size(12, 17);
+            toolStripStatusFrameRate.Size = new Size(16, 19);
             toolStripStatusFrameRate.Text = "-";
             // 
             // toolStripStatusSerialData
             // 
+            toolStripStatusSerialData.BorderSides = ToolStripStatusLabelBorderSides.Left;
             toolStripStatusSerialData.Name = "toolStripStatusSerialData";
-            toolStripStatusSerialData.Size = new Size(12, 17);
+            toolStripStatusSerialData.Size = new Size(16, 19);
             toolStripStatusSerialData.Text = "-";
             // 
             // toolStripStatusLabelStatus
             // 
+            toolStripStatusLabelStatus.BorderSides = ToolStripStatusLabelBorderSides.Left;
             toolStripStatusLabelStatus.Name = "toolStripStatusLabelStatus";
-            toolStripStatusLabelStatus.Size = new Size(12, 17);
+            toolStripStatusLabelStatus.Size = new Size(16, 19);
             toolStripStatusLabelStatus.Text = "-";
             // 
             // toolStripStatusSentData
             // 
+            toolStripStatusSentData.BorderSides = ToolStripStatusLabelBorderSides.Left;
             toolStripStatusSentData.Name = "toolStripStatusSentData";
-            toolStripStatusSentData.Size = new Size(12, 17);
+            toolStripStatusSentData.Size = new Size(16, 19);
             toolStripStatusSentData.Text = "-";
+            // 
+            // toolStripStatusLabelRect
+            // 
+            toolStripStatusLabelRect.BorderSides = ToolStripStatusLabelBorderSides.Left;
+            toolStripStatusLabelRect.Name = "toolStripStatusLabelRect";
+            toolStripStatusLabelRect.Size = new Size(16, 19);
+            toolStripStatusLabelRect.Text = "-";
+            // 
+            // toolStripStatusLabelTimeRGB
+            // 
+            toolStripStatusLabelTimeRGB.BorderSides = ToolStripStatusLabelBorderSides.Left;
+            toolStripStatusLabelTimeRGB.Name = "toolStripStatusLabelTimeRGB";
+            toolStripStatusLabelTimeRGB.Size = new Size(16, 19);
+            toolStripStatusLabelTimeRGB.Text = "-";
             // 
             // splitContainer1
             // 
@@ -151,13 +170,12 @@
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(cbAverageRGB);
             splitContainer1.Panel2.Controls.Add(lbResult);
             splitContainer1.Panel2.Controls.Add(tableLayoutPanel1);
             splitContainer1.Panel2.Controls.Add(pictureBoxRGB);
             splitContainer1.Panel2.Controls.Add(groupBox1);
             splitContainer1.Panel2.Controls.Add(lbColor);
-            splitContainer1.Size = new Size(1040, 571);
+            splitContainer1.Size = new Size(1040, 599);
             splitContainer1.SplitterDistance = 791;
             splitContainer1.TabIndex = 2;
             // 
@@ -167,22 +185,10 @@
             pictureBoxCamera.BackColor = Color.Black;
             pictureBoxCamera.Location = new Point(12, 19);
             pictureBoxCamera.Name = "pictureBoxCamera";
-            pictureBoxCamera.Size = new Size(765, 537);
+            pictureBoxCamera.Size = new Size(765, 565);
             pictureBoxCamera.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBoxCamera.TabIndex = 0;
             pictureBoxCamera.TabStop = false;
-            // 
-            // cbAverageRGB
-            // 
-            cbAverageRGB.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            cbAverageRGB.AutoSize = true;
-            cbAverageRGB.Location = new Point(146, 545);
-            cbAverageRGB.Name = "cbAverageRGB";
-            cbAverageRGB.Size = new Size(91, 19);
-            cbAverageRGB.TabIndex = 8;
-            cbAverageRGB.Text = "AverageRGB";
-            cbAverageRGB.UseVisualStyleBackColor = true;
-            cbAverageRGB.CheckedChanged += cbAverageRGB_CheckedChanged;
             // 
             // lbResult
             // 
@@ -325,6 +331,7 @@
             // groupBox1
             // 
             groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox1.Controls.Add(cbAverageRGB);
             groupBox1.Controls.Add(pictureBox1);
             groupBox1.Controls.Add(btReload);
             groupBox1.Controls.Add(btConnect);
@@ -336,10 +343,21 @@
             groupBox1.Controls.Add(cbDrive);
             groupBox1.Location = new Point(3, 353);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(237, 191);
+            groupBox1.Size = new Size(237, 215);
             groupBox1.TabIndex = 3;
             groupBox1.TabStop = false;
             groupBox1.Text = "SETTING";
+            // 
+            // cbAverageRGB
+            // 
+            cbAverageRGB.AutoSize = true;
+            cbAverageRGB.Location = new Point(71, 80);
+            cbAverageRGB.Name = "cbAverageRGB";
+            cbAverageRGB.Size = new Size(91, 19);
+            cbAverageRGB.TabIndex = 8;
+            cbAverageRGB.Text = "AverageRGB";
+            cbAverageRGB.UseVisualStyleBackColor = true;
+            cbAverageRGB.CheckedChanged += cbAverageRGB_CheckedChanged;
             // 
             // pictureBox1
             // 
@@ -358,7 +376,7 @@
             btReload.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btReload.BackgroundImage = Properties.Resources._refresh_32;
             btReload.BackgroundImageLayout = ImageLayout.Zoom;
-            btReload.Location = new Point(6, 162);
+            btReload.Location = new Point(6, 186);
             btReload.Name = "btReload";
             btReload.Size = new Size(24, 23);
             btReload.TabIndex = 4;
@@ -368,7 +386,7 @@
             // btConnect
             // 
             btConnect.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btConnect.Location = new Point(156, 162);
+            btConnect.Location = new Point(156, 186);
             btConnect.Name = "btConnect";
             btConnect.Size = new Size(75, 23);
             btConnect.TabIndex = 3;
@@ -379,7 +397,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(23, 135);
+            label4.Location = new Point(21, 157);
             label4.Name = "label4";
             label4.Size = new Size(41, 15);
             label4.TabIndex = 1;
@@ -388,7 +406,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(24, 106);
+            label3.Location = new Point(22, 128);
             label3.Name = "label3";
             label3.Size = new Size(40, 15);
             label3.TabIndex = 1;
@@ -397,7 +415,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(24, 80);
+            label2.Location = new Point(22, 102);
             label2.Name = "label2";
             label2.Size = new Size(40, 15);
             label2.TabIndex = 1;
@@ -407,7 +425,7 @@
             // 
             cbCOM.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             cbCOM.FormattingEnabled = true;
-            cbCOM.Location = new Point(73, 135);
+            cbCOM.Location = new Point(71, 157);
             cbCOM.Name = "cbCOM";
             cbCOM.Size = new Size(158, 23);
             cbCOM.TabIndex = 2;
@@ -416,7 +434,7 @@
             // 
             cbBaud.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             cbBaud.FormattingEnabled = true;
-            cbBaud.Location = new Point(73, 106);
+            cbBaud.Location = new Point(71, 128);
             cbBaud.Name = "cbBaud";
             cbBaud.Size = new Size(158, 23);
             cbBaud.TabIndex = 1;
@@ -425,7 +443,7 @@
             // 
             cbDrive.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             cbDrive.FormattingEnabled = true;
-            cbDrive.Location = new Point(73, 77);
+            cbDrive.Location = new Point(71, 99);
             cbDrive.Name = "cbDrive";
             cbDrive.Size = new Size(158, 23);
             cbDrive.TabIndex = 0;
@@ -441,17 +459,11 @@
             lbColor.Text = "-";
             lbColor.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // toolStripStatusLabelRect
-            // 
-            toolStripStatusLabelRect.Name = "toolStripStatusLabelRect";
-            toolStripStatusLabelRect.Size = new Size(12, 17);
-            toolStripStatusLabelRect.Text = "-";
-            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1040, 617);
+            ClientSize = new Size(1040, 647);
             Controls.Add(splitContainer1);
             Controls.Add(statusStrip1);
             Controls.Add(menuStrip1);
@@ -460,6 +472,7 @@
             Name = "Main";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "731TMCx";
+            FormClosing += Main_FormClosing;
             Load += Main_Load;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
@@ -467,7 +480,6 @@
             statusStrip1.PerformLayout();
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
-            splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBoxCamera).EndInit();
@@ -523,5 +535,6 @@
         private CheckBox cbAverageRGB;
         private ToolStripStatusLabel toolStripStatusSentData;
         private ToolStripStatusLabel toolStripStatusLabelRect;
+        private ToolStripStatusLabel toolStripStatusLabelTimeRGB;
     }
 }

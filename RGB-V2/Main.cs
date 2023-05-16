@@ -23,9 +23,6 @@ namespace RGB_V2
         private int oldComboxBaudList = -1;
         private int oldComboxCOMPort = -1;
 
-
-        //private readonly BackgroundWorker bgVideo;
-        private readonly BackgroundWorker bgRGB;
         private readonly TCapture capture;
 
         private SerialPort serialPort;
@@ -41,12 +38,6 @@ namespace RGB_V2
         {
             InitializeComponent();
 
-            bgRGB = new BackgroundWorker();
-            bgRGB.DoWork += BgRGB_DoWork;
-            bgRGB.RunWorkerCompleted += BgRGB_RunWorkerCompleted;
-            bgRGB.WorkerSupportsCancellation = true;
-            bgRGB.WorkerReportsProgress = true;
-            bgRGB.ProgressChanged += BgRGB_ProgressChanged;
 
 
             serialPort = new SerialPort();
@@ -154,15 +145,15 @@ namespace RGB_V2
                     //CropAndDisplayROI();
                     DrawROIOnImage();
 
-                    if (sw.ElapsedMilliseconds >500)
+                    if (sw.ElapsedMilliseconds > 500)
                     {
                         image?.Dispose();
                         image = bitmap?.Clone() as Image;
 
-                        //bgRGB.RunWorkerAsync();
                         sw.Restart();
 
-                        CropAndDisplayROI_RGB();
+                        // CropAndDisplayROI_RGB(image);
+                        StartProcessRGB(image);
                     }
                 }
             }
@@ -178,118 +169,117 @@ namespace RGB_V2
             pictureBoxCamera.Image = bitmap?.Clone() as Image;
 
         }
-        private void BgRGB_ProgressChanged(object? sender, ProgressChangedEventArgs e)
+        private Task task;
+        private void StartProcessRGB(Image m)
         {
-
-        }
-        private void BgRGB_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
-        {
-
-        }
-
-        private void BgRGB_DoWork(object? sender, DoWorkEventArgs e)
-        {
-            if (InvokeRequired)
+            if (task != null && task.Status == TaskStatus.Running)
             {
-                Invoke(new Action(() => CropAndDisplayROI_RGB()));
+                return;
             }
-            else
-            {
-                CropAndDisplayROI_RGB();
-            }
-            Thread.Sleep(100);
+            task = Task.Run(() => CropAndDisplayROI_RGB(m));
         }
-
-        private void CropAndDisplayROI_RGB()
+        private void CropAndDisplayROI_RGB(Image m)
         {
-
             try
             {
-             
+                sw_test.Restart();
                 using (var bmp = new Bitmap(Properties.Settings.Default.Rect.Width, Properties.Settings.Default.Rect.Height))
                 {
-                    sw_test.Restart();
                     using (Graphics g = Graphics.FromImage(bmp))
                     {
-                        g.DrawImage(image, new Rectangle(0, 0, bmp.Width, bmp.Height), Properties.Settings.Default.Rect, GraphicsUnit.Pixel);
-                    }
-                    sw_test.Stop();
-                    Debug.WriteLine("Time RGB :" + sw_test.ElapsedMilliseconds + "ms");
-                    if (cbAverageRGB.Checked)
-                    {
-
-                        pixelColor = GetAverageRGB(pictureBoxRGB.Image);
-
-                    }
-                    else
-                    {
-                        int x = bmp.Width / 2;
-                        int y = bmp.Height / 2;
-                        pixelColor = bmp.GetPixel(x, y);
+                        g.DrawImage(m, new Rectangle(0, 0, bmp.Width, bmp.Height), Properties.Settings.Default.Rect, GraphicsUnit.Pixel);
                     }
 
-                    toolStripStatusLabelRect.Text = $"X: {Properties.Settings.Default.Rect.X} Y: {Properties.Settings.Default.Rect.Y} W: {Properties.Settings.Default.Rect.Width} H: {Properties.Settings.Default.Rect.Height}";
+                    pixelColor = cbAverageRGB.Checked ? GetAverageRGB(bmp) : bmp.GetPixel(bmp.Width / 2, bmp.Height / 2);
 
-                    lbR.Text = pixelColor.R.ToString();
-                    lbR.ForeColor = Color.FromArgb(255 - pixelColor.R, 255 - 0, 255 - 0);
-                    lbR.BackColor = Color.FromArgb(pixelColor.R, 0, 0);
+                    UpdateDisplayLabels();
 
-            
-                    lbG.Text = pixelColor.G.ToString();
-                    lbG.ForeColor = Color.FromArgb(255 - 0, 255 - pixelColor.G, 255 - 0);
-                    lbG.BackColor = Color.FromArgb(0, pixelColor.G, 0);
 
-                    lbB.Text = pixelColor.B.ToString();
-                    lbB.ForeColor = Color.FromArgb(255 - 0, 255 - 0, 255 - pixelColor.B);
-                    lbB.BackColor = Color.FromArgb(0, 0, pixelColor.B);
-
-                    lbColor.BackColor = pixelColor;
-
-                    pictureBoxRGB.BackColor = Color.FromArgb(pixelColor.R, pixelColor.G, pixelColor.B);
 
                     color_name = colorName.Name(colorName.RgbToHex(pixelColor.R, pixelColor.G, pixelColor.B));
 
-                    lbColor.Text = color_name[3];
-                    if (color_name[3].ToLower() == "black" || (pixelColor.R < 40 && pixelColor.G < 40 && pixelColor.B < 40))
-                    {
-                        serialCommand("4");
-                        //Console.WriteLine("Black");
-                        lbResult.Text = "WAIT";
-                        lbResult.ForeColor = Color.Black;
-                        lbResult.BackColor = Color.Yellow;
-                    }
-                    else
-                    if (color_name[3].ToLower() == "red")
-                    {
-                        serialCommand("2");
-                        lbResult.Text = "NG";
-                        lbResult.ForeColor = Color.Black;
-                        lbResult.BackColor = Color.Red;
-                    }
-                    else
-                    if (color_name[3].ToLower() == "green")
-                    {
-                        serialCommand("1");
-                        lbResult.Text = "OK";
-                        lbResult.ForeColor = Color.Black;
-                        lbResult.BackColor = Color.Green;
-                    }
-                    else
-                    {
-                        serialCommand("4");
-                        lbResult.Text = "WAIT";
-                        lbResult.ForeColor = Color.Black;
-                        lbResult.BackColor = Color.Yellow;
-                    }
+                    UpdateSerialCommandAndResult();
                 }
-
+                sw_test.Stop();
+                Debug.WriteLine("Time :" + sw_test.ElapsedMilliseconds + "ms");
+                Debug.WriteLine("Thread :" + Thread.CurrentThread.ManagedThreadId);
+                toolStripStatusLabelTimeRGB.Text = $"Time: {sw_test.ElapsedMilliseconds} ms";
             }
             catch (Exception ex)
             {
                 log.SaveLog(ex.Message);
             }
-
         }
+
+        private void UpdateDisplayLabels()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => UpdateDisplayLabels()));
+                return;
+            }
+            toolStripStatusLabelRect.Text = $"X: {Properties.Settings.Default.Rect.X} Y: {Properties.Settings.Default.Rect.Y} W: {Properties.Settings.Default.Rect.Width} H: {Properties.Settings.Default.Rect.Height}";
+            pictureBoxRGB.BackColor = pixelColor;
+            UpdateLabel(lbR, pixelColor.R, Color.Red);
+            UpdateLabel(lbG, pixelColor.G, Color.Green);
+            UpdateLabel(lbB, pixelColor.B, Color.Blue);
+
+            lbColor.BackColor = pixelColor;
+        }
+
+        private void UpdateLabel(Label label, int value, Color color)
+        {
+            label.Text = value.ToString();
+            label.ForeColor = Color.FromArgb(255 - color.R, 255 - color.G, 255 - color.B);
+            label.BackColor = color;
+        }
+
+        private void UpdateSerialCommandAndResult()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => UpdateSerialCommandAndResult()));
+                return;
+            }
+
+            string colorNameLower = color_name[3].ToLower();
+
+            lbColor.Text = color_name[3];
+            string command;
+            string resultText;
+            Color resultBackColor;
+
+            if (colorNameLower == "black" || (pixelColor.R < 40 && pixelColor.G < 40 && pixelColor.B < 40))
+            {
+                command = "4";
+                resultText = "WAIT";
+                resultBackColor = Color.Yellow;
+            }
+            else if (colorNameLower == "red")
+            {
+                command = "2";
+                resultText = "NG";
+                resultBackColor = Color.Red;
+            }
+            else if (colorNameLower == "green")
+            {
+                command = "1";
+                resultText = "OK";
+                resultBackColor = Color.Green;
+            }
+            else
+            {
+                command = "4";
+                resultText = "WAIT";
+                resultBackColor = Color.Yellow;
+            }
+
+            serialCommand(command);
+            lbResult.Text = resultText;
+            lbResult.ForeColor = Color.Black;
+            lbResult.BackColor = resultBackColor;
+        }
+
 
         private void DrawROIOnImage()
         {
@@ -473,7 +463,8 @@ namespace RGB_V2
             {
                 readDataSerial = serialPort.ReadLine();
                 dataReceived();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 log.SaveLog("Error at Serial_DataReceived :" + ex.Message);
                 Debug.WriteLine("Error at Serial_DataReceived :" + ex.Message);
@@ -531,11 +522,23 @@ namespace RGB_V2
 
         }
 
- 
+
         private void cbAverageRGB_CheckedChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.isAverageRGB = cbAverageRGB.Checked;
             Properties.Settings.Default.Save();
+        }
+
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                capture.Stop();
+            }
+            catch
+            {
+
+            }
         }
     }
 }
