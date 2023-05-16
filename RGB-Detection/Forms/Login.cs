@@ -28,7 +28,7 @@ namespace RGB_Detection.Forms
         {
             if(txtPassword.Text == "0987")
             {
-                this.main.scrollPictureBox.isScroll = true;
+                
                 MessageBox.Show("Login Success", "Login", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.main.loginToolStripMenuItem.Text = "Logout";
                 this.main.saveToolStripMenuItem.Visible = true;

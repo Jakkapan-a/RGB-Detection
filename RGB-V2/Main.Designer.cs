@@ -102,7 +102,7 @@
             // 
             editToolStripMenuItem.Image = Properties.Resources.edit_property_32;
             editToolStripMenuItem.Name = "editToolStripMenuItem";
-            editToolStripMenuItem.Size = new Size(94, 22);
+            editToolStripMenuItem.Size = new Size(180, 22);
             editToolStripMenuItem.Text = "Edit";
             editToolStripMenuItem.Click += editToolStripMenuItem_Click;
             // 
@@ -344,7 +344,7 @@
             groupBox1.Location = new Point(3, 353);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(237, 215);
-            groupBox1.TabIndex = 3;
+            groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "SETTING";
             // 
@@ -379,7 +379,7 @@
             btReload.Location = new Point(6, 186);
             btReload.Name = "btReload";
             btReload.Size = new Size(24, 23);
-            btReload.TabIndex = 4;
+            btReload.TabIndex = 3;
             btReload.UseVisualStyleBackColor = true;
             btReload.Click += btReload_Click;
             // 
@@ -389,7 +389,7 @@
             btConnect.Location = new Point(156, 186);
             btConnect.Name = "btConnect";
             btConnect.Size = new Size(75, 23);
-            btConnect.TabIndex = 3;
+            btConnect.TabIndex = 4;
             btConnect.Text = "Connect";
             btConnect.UseVisualStyleBackColor = true;
             btConnect.Click += btConnect_Click;
@@ -469,9 +469,11 @@
             Controls.Add(menuStrip1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
+            MinimumSize = new Size(1056, 686);
             Name = "Main";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "731TMCx";
+            WindowState = FormWindowState.Maximized;
             FormClosing += Main_FormClosing;
             Load += Main_Load;
             menuStrip1.ResumeLayout(false);

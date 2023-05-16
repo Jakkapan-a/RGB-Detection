@@ -152,8 +152,8 @@ namespace RGB_V2
 
                         sw.Restart();
 
-                        // CropAndDisplayROI_RGB(image);
-                        StartProcessRGB(image);
+                        CropAndDisplayROI_RGB(image);
+                        //StartProcessRGB(image);
                     }
                 }
             }

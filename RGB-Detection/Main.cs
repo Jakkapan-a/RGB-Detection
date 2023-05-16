@@ -1,5 +1,4 @@
 ﻿using DirectShowLib;
-using LogWriter;
 using RGB_Detection.Forms;
 using System;
 using System.Collections.Generic;
@@ -25,7 +24,7 @@ namespace RGB_Detection
         private TCapture.Capture capture;
         Rectangle rect;
 
-        private LogFile LogWriter;
+        private LogWriter LogWriter;
         private Color_name.Color colorName_;
         private string[] color_name;
         public Main()
@@ -35,52 +34,40 @@ namespace RGB_Detection
         }
 
         private void Main_Load(object sender, EventArgs e)
-        { 
+        {
             // Status tool strip clear
             foreach (ToolStripItem item in statusStrip1.Items)
             {
                 item.Text = "";
             }
-            scrollPictureBox.isScroll= false;
             capture = new TCapture.Capture();
             capture.OnFrameHeader += Capture_OnFrameHeader;
             capture.OnVideoStarted += Capture_OnVideoStarted;
             capture.OnVideoStop += Capture_OnVideoStop;
             btRefresh.PerformClick();
-       
+
             loadRectangle();
 
-            if(rect != Rectangle.Empty)
+            if (rect != Rectangle.Empty)
             {
-                scrollPictureBox.SetRectangle(rect);
             }
-            LogWriter = new LogFile();
+            LogWriter = new LogWriter("./system");
             LogWriter.SaveLog("Satrting...");
         }
-        private void SaveRectangle()
+        public void SaveRectangle(Rectangle r)
         {
-            rect = scrollPictureBox.Rect;
-            if (rect != Rectangle.Empty && scrollPictureBox.isScroll)
-            {
-                Properties.Settings.Default.rect_x = rect.X;
-                Properties.Settings.Default.rect_y = rect.Y;
-                Properties.Settings.Default.rect_width = rect.Width;
-                Properties.Settings.Default.rect_height = rect.Height;
-                Properties.Settings.Default.Save();
+            Properties.Settings.Default.rect_x = r.X;
+            Properties.Settings.Default.rect_y = r.Y;
+            Properties.Settings.Default.rect_width = r.Width;
+            Properties.Settings.Default.rect_height = r.Height;
 
-                scrollPictureBox.isScroll = false;
-                loginToolStripMenuItem.Text = "Login";
-                toolStripStatusLogin.Text = "Logout";
-                saveToolStripMenuItem.Visible = false;
-                MessageBox.Show("Save Success", "Save", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }else
-            {
-                MessageBox.Show("Please select image", "Save", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            Properties.Settings.Default.Save();
+            loadRectangle();
         }
 
-        private void loadRectangle(){
-            if(Properties.Settings.Default.rect_x != 0 && Properties.Settings.Default.rect_y != 0 && Properties.Settings.Default.rect_width != 0 && Properties.Settings.Default.rect_height != 0)
+        public void loadRectangle()
+        {
+            if (Properties.Settings.Default.rect_x != 0 && Properties.Settings.Default.rect_y != 0 && Properties.Settings.Default.rect_width != 0 && Properties.Settings.Default.rect_height != 0)
             {
                 rect = new Rectangle(Properties.Settings.Default.rect_x, Properties.Settings.Default.rect_y, Properties.Settings.Default.rect_width, Properties.Settings.Default.rect_height);
                 toolStripStatusParameter.Text = "Rectangle: X=" + rect.X + ", Y=" + rect.Y + ", Width=" + rect.Width + ", Height=" + rect.Height;
@@ -88,10 +75,11 @@ namespace RGB_Detection
         }
         private void Capture_OnVideoStop()
         {
-           
+
             if (scrollPictureBox.InvokeRequired)
             {
-                scrollPictureBox.Invoke(new Action(()=>{
+                scrollPictureBox.Invoke(new Action(() =>
+                {
                     scrollPictureBox.Image = null;
                     timer_get.Stop();
                 }));
@@ -99,10 +87,11 @@ namespace RGB_Detection
             }
             scrollPictureBox.Image = null;
         }
-            
+
         private void Capture_OnVideoStarted()
         {
-            Invoke(new Action(() => {
+            Invoke(new Action(() =>
+            {
                 timer_get.Start();
             }));
         }
@@ -118,167 +107,86 @@ namespace RGB_Detection
             }
             scrollPictureBox.Image?.Dispose();
             scrollPictureBox.Image = (Image)bitmap.Clone();
-            if (scrollPictureBox.isScroll)
+
+            if (rect != Rectangle.Empty)
             {
-                rect = scrollPictureBox._Rectangle;
-            }
-            if (rect != Rectangle.Empty){
                 // Crop image to picture box RGB
-                bmp?.Dispose();  
-                bmp = new Bitmap(rect.Width, rect.Height);
-                
-                using(Graphics g = Graphics.FromImage(bmp))
+
+                this.bmp?.Dispose();
+                this.bmp = new Bitmap(rect.Width, rect.Height);
+
+                using (Graphics g = Graphics.FromImage(bmp))
                 {
                     g.DrawImage(scrollPictureBox.Image, new Rectangle(0, 0, bmp.Width, bmp.Height), rect, GraphicsUnit.Pixel);
                 }
+                pictureBoxRGB.Image?.Dispose();
                 pictureBoxRGB.Image = (Image)bmp.Clone();
                 // Draw Rectangle to Image
                 using (Graphics g = Graphics.FromImage(scrollPictureBox.Image))
                 {
                     g.DrawRectangle(new Pen(Color.Red, 2), rect);
-                }                
+                }
+
             }
         }
         private void timer_get_Tick(object sender, EventArgs e)
         {
-            if (bmp != null && scrollPictureBox._Rectangle != Rectangle.Empty && rect != Rectangle.Empty)
+            try
             {
-                //Center of the picture box
-                int x = bmp.Width / 2;
-                int y = bmp.Height / 2;
-                Color pixelColor = ((Bitmap)bmp.Clone()).GetPixel(x, y);
-                // Get the RGB values
-                txtRed.Text = pixelColor.R.ToString();
-                txtGreen.Text = pixelColor.G.ToString();
-                txtBlue.Text = pixelColor.B.ToString();
-
-
-                color_name = colorName_.Name(colorName_.RgbToHex(pixelColor.R, pixelColor.G, pixelColor.B));
-                lbColor.Text = color_name[3];
-                if (color_name[3].ToLower() == "black" || (pixelColor.R <40 && pixelColor.G<40 && pixelColor.B <40))
+                if (bmp != null && rect != Rectangle.Empty)
                 {
-                    serialCommand("4");
-                    //Console.WriteLine("Black");
-                    lbResult.Text = "WAIT";
-                    lbResult.ForeColor = Color.Black;
-                    lbResult.BackColor = Color.Yellow;
-                }
-                else
-                if (color_name[3].ToLower() == "red")
-                {
-                    serialCommand("2");
-                    //Console.WriteLine("Red");
-                    lbResult.Text = "NG";
-                    lbResult.ForeColor = Color.Black;
-                    lbResult.BackColor = Color.Red;
-                }
-                else
-                if (color_name[3].ToLower() == "green")
-                {
-                    serialCommand("1");
-                    //Console.WriteLine("Green");
-                    lbResult.Text = "OK";
-                    lbResult.ForeColor = Color.Black;
-                    lbResult.BackColor = Color.Green;
-                }
-                else
-                {
-                    serialCommand("4");
-                    //Console.WriteLine("Non");
-                    lbResult.Text = "WAIT";
-                    lbResult.ForeColor = Color.Black;
-                    lbResult.BackColor = Color.Yellow;
-                }
+                    //Center of the picture box
+                    int x = bmp.Width / 2;
+                    int y = bmp.Height / 2;
+                    Color pixelColor = ((Bitmap)bmp).GetPixel(x, y);
+                    // Get the RGB values
+                    txtRed.Text = pixelColor.R.ToString();
+                    txtGreen.Text = pixelColor.G.ToString();
+                    txtBlue.Text = pixelColor.B.ToString();
 
-                #region Old
-                // Test Process
-                // Green color
-                //if (pixelColor.R < 130 && pixelColor.G > 125 && pixelColor.B < 145)
-                //{
-                //    // Send data to Arduino
-                //    // ...
-                //    lbColor.Text = "Green";
-                //    // if(isColorChange != 1)
-                //    // {
-                //    //     serialCommand("1");
-                //    //     isColorChange = 1;
-                //    // }
-                //    serialCommand("1");
-                //}else
-                //// Red color
-                //if (pixelColor.R > 150 && pixelColor.G < 120 && pixelColor.B < 140)
-                //{
-                //    // Send data to Arduino
-                //    // ...
-                //    lbColor.Text = "Red";
-                //    serialCommand("2");
-                //    isColorChange = 2;
-                //}else
-                //// Red color
-                //if (pixelColor.R > 80 && pixelColor.R < 140 && pixelColor.G < 90 && pixelColor.B < 90)
-                //{
-                //    // Send data to Arduino
-                //    // ...
-                //    lbColor.Text = "Red";
-                //    serialCommand("2");
-                //    isColorChange = 2;
-                //}else
-                //// Blue color
-                //if (pixelColor.R < 100 && pixelColor.G < 100 && pixelColor.B > 100)
-                //{
-                //    // Send data to Arduino
-                //    // ...
-                //    lbColor.Text = "Blue";
-                //    serialCommand("3");
-                //    isColorChange = 3;
-                //}
-                //else
-                //// Black color
-                //if (pixelColor.R < 50 && pixelColor.G < 50 && pixelColor.B < 50)
-                //{
-                //    // Send data to Arduino
-                //    // ...
-                //    lbColor.Text = "Black";
-                //    serialCommand("4");
-                //    isColorChange = 4;
-                //}
-                //else
-                //{
-                //    lbColor.Text = "Non!";
-                //    serialCommand("4"); 
-                //}
 
-                // White color'
-                //if (pixelColor.R > 100 && pixelColor.G > 100 && pixelColor.B > 100)
-                //{
-                //    // Send data to Arduino
-                //    // ...
-                //    lbColor.Text = "White";
-                //    serialCommand("5");
-                //    isColorChange = 5;
-                //}
-                //// Yellow color
-                //if (pixelColor.R > 100 && pixelColor.G > 100 && pixelColor.B < 100)
-                //{
-                //    // Send data to Arduino
-                //    // ...
-                //    lbColor.Text = "Yellow";
-                //    serialCommand("6");
-                //    isColorChange = 6;
-                //}
-
-                //// Pink color
-                //if (pixelColor.R > 100 && pixelColor.G < 100 && pixelColor.B > 100)
-                //{
-                //    // Send data to Arduino
-                //    // ...
-                //    lbColor.Text = "Pink";
-                //    serialCommand("7");
-                //    isColorChange = 7;
-                //}
-
-                #endregion
+                    color_name = colorName_.Name(colorName_.RgbToHex(pixelColor.R, pixelColor.G, pixelColor.B));
+                    lbColor.Text = color_name[3];
+                    if (color_name[3].ToLower() == "black" || (pixelColor.R < 40 && pixelColor.G < 40 && pixelColor.B < 40))
+                    {
+                        serialCommand("4");
+                        //Console.WriteLine("Black");
+                        lbResult.Text = "WAIT";
+                        lbResult.ForeColor = Color.Black;
+                        lbResult.BackColor = Color.Yellow;
+                    }
+                    else
+                    if (color_name[3].ToLower() == "red")
+                    {
+                        serialCommand("2");
+                        //Console.WriteLine("Red");
+                        lbResult.Text = "NG";
+                        lbResult.ForeColor = Color.Black;
+                        lbResult.BackColor = Color.Red;
+                    }
+                    else
+                    if (color_name[3].ToLower() == "green")
+                    {
+                        serialCommand("1");
+                        //Console.WriteLine("Green");
+                        lbResult.Text = "OK";
+                        lbResult.ForeColor = Color.Black;
+                        lbResult.BackColor = Color.Green;
+                    }
+                    else
+                    {
+                        serialCommand("4");
+                        lbResult.Text = "WAIT";
+                        lbResult.ForeColor = Color.Black;
+                        lbResult.BackColor = Color.Yellow;
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+                LogWriter.SaveLog(ex.Message);
+            }
+
         }
 
         private Task openTask;
@@ -295,31 +203,31 @@ namespace RGB_Detection
                 isConnect = !isConnect;
                 if (isConnect)
                 {
-                // Check if the camera is connected
-                if (comboBoxCamera.SelectedIndex < 0)
-                {
-                    MessageBox.Show("Please select a camera");
-                    return;
-                }
+                    // Check if the camera is connected
+                    if (comboBoxCamera.SelectedIndex < 0)
+                    {
+                        MessageBox.Show("Please select a camera");
+                        return;
+                    }
 
-                // Check if the COM port is connected
-                if (comboBoxCOMPort.SelectedIndex < 0)
-                {
-                    MessageBox.Show("Please select a COM port");
-                    return;
-                }
+                    // Check if the COM port is connected
+                    if (comboBoxCOMPort.SelectedIndex < 0)
+                    {
+                        MessageBox.Show("Please select a COM port");
+                        return;
+                    }
 
-                // Check if the baud rate is selected
-                if (comboBoxBaud.SelectedIndex < 0)
-                {
-                    MessageBox.Show("Please select a baud rate");
-                    return;
-                }
+                    // Check if the baud rate is selected
+                    if (comboBoxBaud.SelectedIndex < 0)
+                    {
+                        MessageBox.Show("Please select a baud rate");
+                        return;
+                    }
 
-                if (capture.IsOpened)
-                {
-                    capture.Stop();
-                }
+                    if (capture.IsOpened)
+                    {
+                        capture.Stop();
+                    }
 
                     this.serialportName = comboBoxCOMPort.Text;
                     this.baudrate = comboBoxBaud.Text;
@@ -386,46 +294,29 @@ namespace RGB_Detection
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(capture.IsOpened)
+            if (capture.IsOpened)
             {
                 capture.Stop();
                 capture.Dispose();
             }
         }
         Forms._Login login;
-
+        private Crop crop;
         private void loginToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //if (!scrollPictureBox.isScroll)
-            //{
-            //    if(login != null)
-            //    {
-            //        login.Close();
-            //        login = null;
-            //    }
+            crop?.Close();
 
-            //    login = new Forms._Login(this);
-            //    login.Show();
-            //}
-            //else
-            //{
-            //    scrollPictureBox.isScroll = false;
-            //    loginToolStripMenuItem.Text = "Login";
-            //    toolStripStatusLogin.Text = "Logout";
-            //}
-            this.scrollPictureBox.isScroll = true;
-            this.loginToolStripMenuItem.Text = "Logout";
-            this.saveToolStripMenuItem.Visible = true;
-            this.toolStripStatusLogin.Text = "Login";
+            crop = new Crop(this);
+            crop.Show();
 
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveRectangle();
+
         }
 
-         #region Serial Port 
+        #region Serial Port 
         public string serialportName = string.Empty;
 
         public string baudrate = string.Empty;
@@ -487,7 +378,7 @@ namespace RGB_Detection
             {
                 this.serialPort.Write(">" + command + "<#");
                 LogWriter.SaveLog("Serial send : " + command);
-                toolStripStatusSentData.Text = "Send : "+ command;
+                toolStripStatusSentData.Text = "Send : " + command;
             }
         }
 
