@@ -111,7 +111,6 @@ namespace RGB_Detection
             if (rect != Rectangle.Empty)
             {
                 // Crop image to picture box RGB
-
                 this.bmp?.Dispose();
                 this.bmp = new Bitmap(rect.Width, rect.Height);
 
@@ -150,7 +149,6 @@ namespace RGB_Detection
                     if (color_name[3].ToLower() == "black" || (pixelColor.R < 40 && pixelColor.G < 40 && pixelColor.B < 40))
                     {
                         serialCommand("4");
-                        //Console.WriteLine("Black");
                         lbResult.Text = "WAIT";
                         lbResult.ForeColor = Color.Black;
                         lbResult.BackColor = Color.Yellow;
@@ -159,7 +157,6 @@ namespace RGB_Detection
                     if (color_name[3].ToLower() == "red")
                     {
                         serialCommand("2");
-                        //Console.WriteLine("Red");
                         lbResult.Text = "NG";
                         lbResult.ForeColor = Color.Black;
                         lbResult.BackColor = Color.Red;
@@ -168,7 +165,6 @@ namespace RGB_Detection
                     if (color_name[3].ToLower() == "green")
                     {
                         serialCommand("1");
-                        //Console.WriteLine("Green");
                         lbResult.Text = "OK";
                         lbResult.ForeColor = Color.Black;
                         lbResult.BackColor = Color.Green;
@@ -377,7 +373,6 @@ namespace RGB_Detection
             if (this.serialPort.IsOpen)
             {
                 this.serialPort.Write(">" + command + "<#");
-                LogWriter.SaveLog("Serial send : " + command);
                 toolStripStatusSentData.Text = "Send : " + command;
             }
         }
@@ -392,7 +387,6 @@ namespace RGB_Detection
             catch (Exception ex)
             {
                 LogWriter.SaveLog("Error Serial :" + ex.Message);
-                //MessageBox.Show(ex.Message, "Error Serial", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -406,9 +400,10 @@ namespace RGB_Detection
                 this.dataSerialReceived = string.Empty;
                 data = data.Replace(">", "").Replace("<", "");
                 toolStripStatusSerialData.Text = "DATA :" + data;
-                LogWriter.SaveLog("Serial Received : " + data);
+                //LogWriter.SaveLog("Serial Received : " + data);
                 if (data == "rst" || data.Contains("rst"))
                 {
+
                 }
             }
             else if (!dataSerialReceived.Contains(">"))
