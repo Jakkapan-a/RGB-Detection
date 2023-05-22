@@ -40,7 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="color_name">
-      <HintPath>..\..\Lib\color_name\color_name\bin\Debug\color_name.dll</HintPath>
+      <HintPath>..\..\..\..\Library\Color_name\color_name\bin\Debug\color_name.dll</HintPath>
     </Reference>
     <Reference Include="DirectShowLib, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DirectShowLib.Standard.2.1.0\lib\net45\DirectShowLib.dll</HintPath>
@@ -88,7 +88,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="TClass">
-      <HintPath>..\..\Class Library\TClass\TClass\bin\Debug\TClass.dll</HintPath>
+      <HintPath>..\..\..\..\Library\TClass\TClass\bin\Debug\TClass.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

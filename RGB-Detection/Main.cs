@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO.Ports;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -53,6 +55,7 @@ namespace RGB_Detection
             }
             LogWriter = new LogWriter("./system");
             LogWriter.SaveLog("Satrting...");
+            cbAv.Checked = Properties.Settings.Default.isAverage;
         }
         public void SaveRectangle(Rectangle r)
         {
@@ -128,6 +131,13 @@ namespace RGB_Detection
 
             }
         }
+
+        private void UpdateLabel(Label label, int value, Color color)
+        {
+            label.Text = value.ToString();
+            label.ForeColor = Color.FromArgb(255 - color.R, 255 - color.G, 255 - color.B);
+            label.BackColor = color;
+        }
         private void timer_get_Tick(object sender, EventArgs e)
         {
             try
@@ -137,12 +147,11 @@ namespace RGB_Detection
                     //Center of the picture box
                     int x = bmp.Width / 2;
                     int y = bmp.Height / 2;
-                    Color pixelColor = ((Bitmap)bmp).GetPixel(x, y);
+                    Color pixelColor = cbAv.Checked? GetAverageRGB(bmp) : ((Bitmap)bmp).GetPixel(x, y);
                     // Get the RGB values
                     txtRed.Text = pixelColor.R.ToString();
                     txtGreen.Text = pixelColor.G.ToString();
                     txtBlue.Text = pixelColor.B.ToString();
-
 
                     color_name = colorName_.Name(colorName_.RgbToHex(pixelColor.R, pixelColor.G, pixelColor.B));
                     lbColor.Text = color_name[3];
@@ -183,6 +192,47 @@ namespace RGB_Detection
                 LogWriter.SaveLog(ex.Message);
             }
 
+        }
+
+        private Color GetAverageRGB(Bitmap image)
+        {
+            if (image == null)
+                return Color.Black;
+
+            using (Bitmap bmp = new Bitmap(image))
+            {
+                int redSum = 0, greenSum = 0, blueSum = 0;
+                int pixelCount = 0;
+
+                Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+                BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadOnly, bmp.PixelFormat);
+                IntPtr ptr = bmpData.Scan0;
+
+                int bytesPerPixel = Image.GetPixelFormatSize(bmp.PixelFormat) / 8;
+                int totalBytes = bmpData.Stride * bmp.Height;
+                byte[] rgbValues = new byte[totalBytes];
+
+                Marshal.Copy(ptr, rgbValues, 0, totalBytes);
+
+                for (int y = 0; y < bmp.Height; y++)
+                {
+                    for (int x = 0; x < bmp.Width; x++)
+                    {
+                        int position = (y * bmpData.Stride) + (x * bytesPerPixel);
+                        blueSum += rgbValues[position];
+                        greenSum += rgbValues[position + 1];
+                        redSum += rgbValues[position + 2];
+                        pixelCount++;
+                    }
+                }
+                bmp.UnlockBits(bmpData);
+
+                int avgR = redSum / pixelCount;
+                int avgG = greenSum / pixelCount;
+                int avgB = blueSum / pixelCount;
+
+                return Color.FromArgb(avgR, avgG, avgB);
+            }
         }
 
         private Task openTask;
@@ -412,5 +462,11 @@ namespace RGB_Detection
             }
         }
         #endregion
+
+        private void cbAv_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.isAverage = cbAv.Checked;
+            Properties.Settings.Default.Save();
+        }
     }
 }
