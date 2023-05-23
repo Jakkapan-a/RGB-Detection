@@ -118,8 +118,8 @@ namespace RGB_Detection
                 {
                     g.DrawImage(scrollPictureBox.Image, new Rectangle(0, 0, bmp.Width, bmp.Height), rect, GraphicsUnit.Pixel);
                 }
-                pictureBoxRGB.Image?.Dispose();
-                pictureBoxRGB.Image = (Image)bmp.Clone();
+                //pictureBoxRGB.Image?.Dispose();
+                //pictureBoxRGB.Image = (Image)bmp.Clone();
                 // Draw Rectangle to Image
                 using (Graphics g = Graphics.FromImage(scrollPictureBox.Image))
                 {
@@ -137,7 +137,9 @@ namespace RGB_Detection
                     //Center of the picture box
                     int x = bmp.Width / 2;
                     int y = bmp.Height / 2;
-                    Color pixelColor = ((Bitmap)bmp).GetPixel(x, y);
+                    Color pixelColor = bmp.GetPixel(x, y);
+
+                    pictureBoxRGB.BackColor = pixelColor;
                     // Get the RGB values
                     txtRed.Text = pixelColor.R.ToString();
                     txtGreen.Text = pixelColor.G.ToString();
@@ -412,5 +414,6 @@ namespace RGB_Detection
             }
         }
         #endregion
+
     }
 }

@@ -38,8 +38,6 @@ namespace RGB_V2
         {
             InitializeComponent();
 
-
-
             serialPort = new SerialPort();
             serialPort.DataReceived += Serial_DataReceived;
             serialPort.ErrorReceived += Serial_ErrorReceived;
@@ -194,8 +192,6 @@ namespace RGB_V2
 
                     UpdateDisplayLabels();
 
-
-
                     color_name = colorName.Name(colorName.RgbToHex(pixelColor.R, pixelColor.G, pixelColor.B));
 
                     UpdateSerialCommandAndResult();
@@ -283,6 +279,10 @@ namespace RGB_V2
 
         private void DrawROIOnImage()
         {
+            if (Properties.Settings.Default.Rect == Rectangle.Empty)
+            {
+                return;
+            }
             using (Graphics g = Graphics.FromImage(pictureBoxCamera.Image))
             {
                 g.DrawRectangle(new Pen(Color.Red, 2), Properties.Settings.Default.Rect);
@@ -441,7 +441,6 @@ namespace RGB_V2
                     serialPort.Close();
                 }
 
-
                 log.SaveLog("E01 " + ex.Message);
                 MessageBox.Show("E01 " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -503,7 +502,6 @@ namespace RGB_V2
             if (this.serialPort.IsOpen)
             {
                 this.serialPort.Write(">" + command + "<#");
-                log.SaveLog("Serial send : " + command);
                 toolStripStatusSentData.Text = "Send : " + command;
             }
         }

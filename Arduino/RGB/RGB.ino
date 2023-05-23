@@ -73,31 +73,27 @@ void serialCommand(String command) {
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-        ledGREEN.off();
+      ledGREEN.off();
       LedRED.off();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 if (stringComplete) {  // If state complete is true
-    if(inputString == "1") {
+    if(inputString == "1" || inputString == "ok" || inputString == "OK" ) {
       ledGREEN.on();
       LedRED.off();
       countDown = setCount;
     }else
-    if(inputString == "2") {
+    if(inputString == "2"  || inputString == "ng" || inputString == "NG" ) {
       ledGREEN.off();
       countDownRed = setCountRed;
       LedRED.on();
     }else
-    if(inputString == "3") {
-      // ledGREEN.off();
+    if(inputString == "3" || inputString == "4" || inputString == "null") {
       LedRED.off();
-    }else
-    if(inputString == "4") {
-      // ledGREEN.off();
-      LedRED.off();
-    }    
+    }
+       
     delay(10);
     serialCommand(inputString);
     inputString = "";

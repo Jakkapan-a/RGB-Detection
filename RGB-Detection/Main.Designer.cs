@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.scrollPictureBox = new System.Windows.Forms.PictureBox();
             this.groupBox = new System.Windows.Forms.GroupBox();
             this.lbResult = new System.Windows.Forms.Label();
             this.txtBlue = new System.Windows.Forms.TextBox();
@@ -40,6 +41,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lbColor = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.pictureBoxRGB = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -48,6 +50,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.comboBoxCamera = new System.Windows.Forms.ComboBox();
             this.btConnect = new System.Windows.Forms.Button();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.btRefresh = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLogin = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusConnectSerialPort = new System.Windows.Forms.ToolStripStatusLabel();
@@ -56,26 +60,22 @@
             this.toolStripStatusSerialData = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.systemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.parameterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer_get = new System.Windows.Forms.Timer(this.components);
             this.serialPort = new System.IO.Ports.SerialPort(this.components);
-            this.loginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.scrollPictureBox = new System.Windows.Forms.PictureBox();
-            this.pictureBoxRGB = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.btRefresh = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.scrollPictureBox)).BeginInit();
             this.groupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRGB)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.scrollPictureBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRGB)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -99,6 +99,19 @@
             this.splitContainer1.Size = new System.Drawing.Size(892, 504);
             this.splitContainer1.SplitterDistance = 655;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // scrollPictureBox
+            // 
+            this.scrollPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scrollPictureBox.BackColor = System.Drawing.Color.Black;
+            this.scrollPictureBox.Location = new System.Drawing.Point(17, 14);
+            this.scrollPictureBox.Name = "scrollPictureBox";
+            this.scrollPictureBox.Size = new System.Drawing.Size(621, 465);
+            this.scrollPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.scrollPictureBox.TabIndex = 0;
+            this.scrollPictureBox.TabStop = false;
             // 
             // groupBox
             // 
@@ -195,6 +208,17 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "R";
             // 
+            // pictureBoxRGB
+            // 
+            this.pictureBoxRGB.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.pictureBoxRGB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBoxRGB.Location = new System.Drawing.Point(60, 19);
+            this.pictureBoxRGB.Name = "pictureBoxRGB";
+            this.pictureBoxRGB.Size = new System.Drawing.Size(100, 50);
+            this.pictureBoxRGB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBoxRGB.TabIndex = 0;
+            this.pictureBoxRGB.TabStop = false;
+            // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -284,6 +308,30 @@
             this.btConnect.UseVisualStyleBackColor = true;
             this.btConnect.Click += new System.EventHandler(this.btConnect_Click);
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.pictureBox2.BackgroundImage = global::RGB_Detection.Properties.Resources.camera_logo;
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox2.Location = new System.Drawing.Point(71, 15);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(89, 37);
+            this.pictureBox2.TabIndex = 0;
+            this.pictureBox2.TabStop = false;
+            // 
+            // btRefresh
+            // 
+            this.btRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btRefresh.BackgroundImage = global::RGB_Detection.Properties.Resources._refresh_32;
+            this.btRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btRefresh.Location = new System.Drawing.Point(6, 155);
+            this.btRefresh.Name = "btRefresh";
+            this.btRefresh.Size = new System.Drawing.Size(25, 23);
+            this.btRefresh.TabIndex = 0;
+            this.btRefresh.UseVisualStyleBackColor = true;
+            this.btRefresh.Click += new System.EventHandler(this.btRefresh_Click);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -352,10 +400,18 @@
             this.systemToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.systemToolStripMenuItem.Text = "System";
             // 
+            // loginToolStripMenuItem
+            // 
+            this.loginToolStripMenuItem.Image = global::RGB_Detection.Properties.Resources._password_32;
+            this.loginToolStripMenuItem.Name = "loginToolStripMenuItem";
+            this.loginToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.loginToolStripMenuItem.Text = "Set";
+            this.loginToolStripMenuItem.Click += new System.EventHandler(this.loginToolStripMenuItem_Click);
+            // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Visible = false;
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
@@ -363,7 +419,7 @@
             // parameterToolStripMenuItem
             // 
             this.parameterToolStripMenuItem.Name = "parameterToolStripMenuItem";
-            this.parameterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.parameterToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.parameterToolStripMenuItem.Text = "Parameter";
             this.parameterToolStripMenuItem.Visible = false;
             // 
@@ -375,62 +431,6 @@
             // serialPort
             // 
             this.serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort_DataReceived);
-            // 
-            // loginToolStripMenuItem
-            // 
-            this.loginToolStripMenuItem.Image = global::RGB_Detection.Properties.Resources._password_32;
-            this.loginToolStripMenuItem.Name = "loginToolStripMenuItem";
-            this.loginToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.loginToolStripMenuItem.Text = "Set";
-            this.loginToolStripMenuItem.Click += new System.EventHandler(this.loginToolStripMenuItem_Click);
-            // 
-            // scrollPictureBox
-            // 
-            this.scrollPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.scrollPictureBox.BackColor = System.Drawing.Color.Black;
-            this.scrollPictureBox.Location = new System.Drawing.Point(17, 14);
-            this.scrollPictureBox.Name = "scrollPictureBox";
-            this.scrollPictureBox.Size = new System.Drawing.Size(621, 465);
-            this.scrollPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.scrollPictureBox.TabIndex = 0;
-            this.scrollPictureBox.TabStop = false;
-            // 
-            // pictureBoxRGB
-            // 
-            this.pictureBoxRGB.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.pictureBoxRGB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBoxRGB.Location = new System.Drawing.Point(60, 19);
-            this.pictureBoxRGB.Name = "pictureBoxRGB";
-            this.pictureBoxRGB.Size = new System.Drawing.Size(100, 50);
-            this.pictureBoxRGB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBoxRGB.TabIndex = 0;
-            this.pictureBoxRGB.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.pictureBox2.BackgroundImage = global::RGB_Detection.Properties.Resources.camera_logo;
-            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox2.Location = new System.Drawing.Point(71, 15);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(89, 37);
-            this.pictureBox2.TabIndex = 0;
-            this.pictureBox2.TabStop = false;
-            // 
-            // btRefresh
-            // 
-            this.btRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btRefresh.BackgroundImage = global::RGB_Detection.Properties.Resources._refresh_32;
-            this.btRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btRefresh.Location = new System.Drawing.Point(6, 155);
-            this.btRefresh.Name = "btRefresh";
-            this.btRefresh.Size = new System.Drawing.Size(25, 23);
-            this.btRefresh.TabIndex = 0;
-            this.btRefresh.UseVisualStyleBackColor = true;
-            this.btRefresh.Click += new System.EventHandler(this.btRefresh_Click);
             // 
             // Main
             // 
@@ -453,17 +453,17 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.scrollPictureBox)).EndInit();
             this.groupBox.ResumeLayout(false);
             this.groupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRGB)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.scrollPictureBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRGB)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
