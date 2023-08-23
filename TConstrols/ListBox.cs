@@ -14,6 +14,7 @@ namespace Netdev.Windows.Forms
     public class ListBox : System.Windows.Forms.ListBox
     {
         public event EventHandler<IndexEventArgs> DisabledItemSelected;
+
         protected virtual void OnDisabledItemSelected(object sender, IndexEventArgs e)
         {
             if (DisabledItemSelected != null)
@@ -429,19 +430,8 @@ namespace Netdev.Windows.Forms
 
     public class IndexEventArgs : EventArgs
     {
-        private int index;
-        public int Index
-        {
-            get
-            {
-                return index;
-            }
+        public int Index { get; set; }
 
-            set
-            {
-                index = value;
-            }
-        }
         public IndexEventArgs(int index)
         {
             Index = index;

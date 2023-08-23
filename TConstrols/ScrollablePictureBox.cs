@@ -68,6 +68,7 @@ namespace TConstrols
         /// </summary>
         public Dictionary<Color, List<Rectangle>> SegmentedRegions
         { get; set; }
+
         protected override void OnPaint(PaintEventArgs pe)
         {
             base.OnPaint(pe);
@@ -158,6 +159,7 @@ namespace TConstrols
 
             return ar;
         }
+
         private void ScrollablePictureBox_MouseUp(object sender, MouseEventArgs e)
         {
 

@@ -61,5 +61,10 @@
       <DependentUpon>ScrolPictureBox.cs</DependentUpon>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ScrollablePictureBox.resx">
+      <DependentUpon>ScrollablePictureBox.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

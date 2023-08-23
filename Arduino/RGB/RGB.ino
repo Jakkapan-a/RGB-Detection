@@ -1,14 +1,28 @@
 #include <TcPINOUT.h>
 #include <TcBUTTON.h>
 
-#define ledRedPIN 3 // LED RED
-TcPINOUT LedRED(ledRedPIN);  // NG sound LedRED
-#define ledGreenPIN 4 // LED GREEN
+#define LED_RED_PIN 9 // LED RED
+TcPINOUT LedRED(LED_RED_PIN);  // NG sound LedRED
+#define LED_GREEN_PIN 8 // LED GREEN
 void Green(bool);
-TcPINOUT ledGREEN(ledGreenPIN,Green);     // On relay contact AC voltage
+TcPINOUT ledGREEN(LED_GREEN_PIN,Green);     // On relay contact AC voltage
 
 #define relaySTATUS 2 // Button
 TcPINOUT relayStatus(relaySTATUS,NULL,true);  // Button
+
+
+#define RELAY_1_PIN 4 // Relay 1
+TcPINOUT relay1(RELAY_1_PIN);  // Relay 1
+
+#define RELAY_2_PIN 5 // Relay 2
+TcPINOUT relay2(RELAY_2_PIN);  // Relay 2
+
+#define RELAY_3_PIN 6 // Relay 3
+TcPINOUT relay3(RELAY_3_PIN);  // Relay 3
+
+#define RELAY_4_PIN 7 // Relay 4
+TcPINOUT relay4(RELAY_4_PIN);  // Relay 4
+
 /*
 Color code
   1. Green
@@ -20,12 +34,11 @@ Color code
   7. Pink
 */
 
-unsigned long period = 1000;
 int period_overspend = -1000;
 unsigned long last_time_cs = 0;
 
 // Variables count down
-const int setCount = 10;  // Set count down time 10 seconds
+const int setCount = 15;  // Set count down time 15 seconds
 int countDown = 0;           // Count down time
 int countDownRed = 0;
 const int setCountRed = 1; 
@@ -49,7 +62,7 @@ void serialEvent() {
   }
 }
 void Working() {
-  if (millis() - last_time_cs > period) {
+  if (millis() - last_time_cs > 1000) {
     if (countDown > 0) {
       countDown--;
     } else {
@@ -73,8 +86,8 @@ void serialCommand(String command) {
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-      ledGREEN.off();
-      LedRED.off();
+  ledGREEN.off();
+  LedRED.off();
 }
 
 void loop() {
@@ -105,7 +118,15 @@ if (stringComplete) {  // If state complete is true
 void Green(bool state) {
   if (state) {
     relayStatus.on();
+    relay1.on();
+    relay2.on();
+    relay3.on();
+    relay4.on();
   } else {
     relayStatus.off();
+    relay1.off();
+    relay2.off();
+    relay3.off();
+    relay4.off();
   }
 }

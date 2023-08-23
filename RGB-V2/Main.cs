@@ -150,8 +150,8 @@ namespace RGB_V2
 
                         sw.Restart();
 
-                        CropAndDisplayROI_RGB(image);
-                        //StartProcessRGB(image);
+                       // CropAndDisplayROI_RGB(image);
+                       StartProcessRGB(image);
                     }
                 }
             }
@@ -181,18 +181,19 @@ namespace RGB_V2
             try
             {
                 sw_test.Restart();
+                using Image img = m.Clone() as Image;
+
                 using (var bmp = new Bitmap(Properties.Settings.Default.Rect.Width, Properties.Settings.Default.Rect.Height))
                 {
                     using (Graphics g = Graphics.FromImage(bmp))
                     {
-                        g.DrawImage(m, new Rectangle(0, 0, bmp.Width, bmp.Height), Properties.Settings.Default.Rect, GraphicsUnit.Pixel);
+                        g.DrawImage(img, new Rectangle(0, 0, bmp.Width, bmp.Height), Properties.Settings.Default.Rect, GraphicsUnit.Pixel);
                     }
 
                     pixelColor = cbAverageRGB.Checked ? GetAverageRGB(bmp) : bmp.GetPixel(bmp.Width / 2, bmp.Height / 2);
+                    color_name = colorName.Name(colorName.RgbToHex(pixelColor.R, pixelColor.G, pixelColor.B));
 
                     UpdateDisplayLabels();
-
-                    color_name = colorName.Name(colorName.RgbToHex(pixelColor.R, pixelColor.G, pixelColor.B));
 
                     UpdateSerialCommandAndResult();
                 }
